@@ -1,15 +1,19 @@
-body{
-    height: 26px;
-    width: 58px;
+body {
+    background: #F2F2F2;
+    height: 32px;
+    width: 80px;
 }
-
-div {
+button {
+    border-radius: 3px;
+    border: none;
     opacity: 0.5;
     display: inline-block;
 }
-div:hover{
+button:hover {
     opacity: 1;
 }
 img {
-    padding: 1px;
+    padding-top:2px;
+    width: 24px;
+    height: 24px;
 }
