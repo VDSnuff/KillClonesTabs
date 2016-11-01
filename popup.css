@@ -1,0 +1,15 @@
+body{
+    height: 26px;
+    width: 58px;
+}
+
+div {
+    opacity: 0.5;
+    display: inline-block;
+}
+div:hover{
+    opacity: 1;
+}
+img {
+    padding: 1px;
+}
