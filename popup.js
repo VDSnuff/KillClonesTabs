@@ -2,6 +2,7 @@ var tabListBeforOne = [];
 var tabListBeforTwo = [];
 var tabListAfter = [];
 var tabIndex = [];
+var tabId = [];
 
 function highlightClonesFunc() {
 
@@ -72,20 +73,17 @@ function killClonesFunc (){
 
         for (var i = 0; i < tabListBeforOne.length; i++) {
             for (var j = 0; j < tabListBeforTwo.length; j++) {
-                if (tabListBeforOne[i].tabUrl == tabListBeforTwo[j].tabUrl && tabListBeforOne[i].tabId != tabListBeforTwo[j].tabId) {
+                if (tabListBeforOne[i].tabUrl == tabListBeforTwo[j].tabUrl && tabListBeforOne[i].tabIndex < tabListBeforTwo[j].tabIndex && tabListBeforOne[i].tabId != tabListBeforTwo[j].tabId) {
                     tabListAfter.push(tabListBeforTwo[j]);
                 }
             }
         }
 
-        //Test 
-        //console.log(tabListAfter);
-
-        for (var e = 0; e < tabListAfter.length; e++) {
-            tabIndex.push(tabListAfter[e].tabIndex);
+for (var e = 0; e < tabListAfter.length; e++) {
+            tabId.push(tabListAfter[e].tabId);
         }
 
-        chrome.tabs.remove([2311]);
+        chrome.tabs.remove(tabId);
     });
     
 }
