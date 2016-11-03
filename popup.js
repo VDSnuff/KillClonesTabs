@@ -1,10 +1,9 @@
-var tabListBeforOne = [];
-var tabListBeforTwo = [];
-var tabListAfter = [];
-var tabIndex = [];
-var tabId = [];
-
 function highlightClonesFunc() {
+
+    var tabListBeforOne = [];
+    var tabListBeforTwo = [];
+    var tabListAfter = [];
+    var tabIndex = [];
 
     chrome.windows.getAll({
         populate: true
@@ -50,9 +49,14 @@ function highlightClonesFunc() {
 document.getElementById('btnTarget').onclick = highlightClonesFunc;
 
 
-function killClonesFunc (){
-    
-     chrome.windows.getAll({
+function killClonesFunc() {
+
+    var tabListBeforOne = [];
+    var tabListBeforTwo = [];
+    var tabListAfter = [];
+    var tabId = [];
+
+    chrome.windows.getAll({
         populate: true
     }, function(windows) {
         windows.forEach(function(window) {
@@ -79,13 +83,13 @@ function killClonesFunc (){
             }
         }
 
-for (var e = 0; e < tabListAfter.length; e++) {
+        for (var e = 0; e < tabListAfter.length; e++) {
             tabId.push(tabListAfter[e].tabId);
         }
 
         chrome.tabs.remove(tabId);
     });
-    
+
 }
 
 //Linking with killClonesFunc function
