@@ -34,7 +34,10 @@ function highlightClonesFunc() {
 
         //Test 
         //console.log(tabListAfter);
-
+ if (tabListAfter.length == 0) {
+        document.getElementById("status").innerHTML = "All clear!";    
+        }
+        else{
         for (var e = 0; e < tabListAfter.length; e++) {
             tabIndex.push(tabListAfter[e].tabIndex);
         }
@@ -42,6 +45,8 @@ function highlightClonesFunc() {
         chrome.tabs.highlight({
             tabs: tabIndex
         });
+             document.getElementById("status").innerHTML = "Got something!"; 
+        }
     });
 }
 
@@ -83,11 +88,17 @@ function killClonesFunc() {
             }
         }
 
+        if (tabListAfter.length == 0) {
+        document.getElementById("status").innerHTML = "No targets!";    
+        }
+        else{
         for (var e = 0; e < tabListAfter.length; e++) {
             tabId.push(tabListAfter[e].tabId);
         }
 
         chrome.tabs.remove(tabId);
+        document.getElementById("status").innerHTML = "Done!"; 
+        }
     });
 
 }

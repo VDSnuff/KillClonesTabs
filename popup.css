@@ -16,4 +16,11 @@ img {
     padding-top:2px;
     width: 24px;
     height: 24px;
+    padding-bottom: 0;
+}
+
+p {
+    color: #797979;
+    text-align: center;
+    padding-bottom: 4px;
 }
