@@ -13,14 +13,20 @@ button:hover {
     opacity: 1;
 }
 img {
-    padding-top:2px;
+    padding-top: 4px;
     width: 24px;
     height: 24px;
-    padding-bottom: 0;
+    padding-bottom: 2px;
 }
-
 p {
+    padding-top: 0;
     color: #797979;
     text-align: center;
-    padding-bottom: 4px;
+    padding-bottom: 0px;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
 }

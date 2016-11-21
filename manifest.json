@@ -1,29 +1,22 @@
 {
-    // Required
     "manifest_version": 2,
     "name": "Kill The Clones",
     "version": "1.0",
-
-    // Recommended
-    "description": "This extension compares opened browser tabs and highlight duplicates changed favicons on it. Optionally it can close all duplicates tabs.",
+    "description": "This extension compares opened browser tabs and highlight duplicates. Optionally it can close all duplicates tabs.",
     "icons": {
         "16": "images/KillClonesIcon16.png",
         "48": "images/KillClonesIcon48.png",
         "128": "images/KillClonesIcon128.png"
     },
-
-    // Pick one (or none)
     "browser_action": {
-        "default_icon": { // optional
-            "16": "images/KillClonesIcon16.png", // optional
-            "24": "images/KillClonesIcon24.png", // optional
-            "32": "images/KillClonesIcon32.png" // optional
+        "default_icon": {
+            "16": "images/KillClonesIcon16.png",
+            "24": "images/KillClonesIcon24.png",
+            "32": "images/KillClonesIcon32.png"
         },
-        "default_title": "Kill the clones tabs.", // optional; shown in tooltip
-        "default_popup": "popup.html" // optional
+        "default_title": "Kill the clones tabs.",
+        "default_popup": "popup.html"
     },
-
-    // Optional
     "author": "Viacheslav Dovnich",
     "permissions": ["tabs", "chrome://favicon/"]
 }
