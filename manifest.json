@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "Kill The Clones",
-    "version": "1.0",
+    "version": "1.1",
     "description": "This extension compares opened browser tabs and highlight duplicates. Optionally it can close all duplicates tabs.",
     "icons": {
         "16": "images/KillClonesIcon16.png",

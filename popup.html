@@ -1,33 +1,27 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <title>Kill</title>
     <link href="popup.css" rel="stylesheet">
 </head>
-
 <body>
-
-    <button type="button" id="btnTarget">
-        <img src="images/target24.png" alt="target" height="25" width="25">
-    </button>
-    <button type="button" id="btnKill">
-        <img src="images/axe24.png" alt="axe" height="25" width="25">
-    </button>
-
+    <p>Manage Tabs</p>
+    <div>
+        <button title="Show duplicates" type="button" id="btnTarget">
+            <img src="images/search24.png" alt="target" height="15" width="15">
+          </button>
+        <button title="Kill duplicates" type="button" id="btnKill">
+            <img src="images/axe24.png" alt="axe" height="15" width="15">
+        </button>
+        <button title="Pin All Tabs" type="button" id="btnPin">
+            <img src="images/push-pin24.png" alt="Pin" height="25" width="25">
+        </button>
+        <button title="Mute All Tabs" type="button" id="btnMuted">
+            <img src="images/mute24.png" alt="Mute  " height="25" width="25">
+        </button>
+    </div>
     <p id="status">Hello!</p>
-<!--
-    <button type="button" id="btnHostList">
-        <img src="" alt="list" height="25" width="50">
-    </button>
-
-    <ul id="list">
-        <li>Host list:</li>
-    </ul>
--->
-
     <script src="popup.js"></script>
 </body>
-
 </html>
