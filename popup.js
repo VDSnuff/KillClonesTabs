@@ -73,8 +73,9 @@ function killClones() {
     });
 }
 
-function pinAll(){
-    chrome.tabs.query({ currentWindow: true
+function pinAll() {
+    chrome.tabs.query({
+        currentWindow: true
     }, function (tabs) {
         var isAllPinned = true;
         for (var i in tabs) {
@@ -88,13 +89,14 @@ function pinAll(){
             chrome.tabs.update(tabs[j].id, { pinned: !isAllPinned });
         }
 
-        if (!allPinned) document.getElementById("status").innerHTML = "All Pinned!"; 
-        else document.getElementById("status").innerHTML = "Unpinned!"; 
+        if (!allPinned) document.getElementById("status").innerHTML = "All Pinned!";
+        else document.getElementById("status").innerHTML = "Unpinned!";
     });
 }
 
 function muteAll() {
-    chrome.tabs.query({ currentWindow: true
+    chrome.tabs.query({
+        currentWindow: true
     }, function (tabs) {
         var allMuted = true;
         for (var i in tabs) {
