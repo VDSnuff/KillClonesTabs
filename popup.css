@@ -29,3 +29,7 @@ p {
     text-align: center;
     margin: 2px;
 }
+
+#status {
+    margin-bottom: 10px;
+}
