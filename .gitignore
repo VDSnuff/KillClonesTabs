@@ -1,0 +1,14 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Build artifacts
+/version/KillClonesTabs_*.zip
+/version/KillClonesTabs_*.crx
+/version/KillClonesTabs_*.pem
+/version/KillClonesTabs_*/
+
+# VS Code
+.vscode/
+.vs/
