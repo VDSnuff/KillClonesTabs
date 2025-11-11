@@ -65,10 +65,14 @@ document.getElementById('btnTarget').onclick = highlightClones;
 document.getElementById('btnKill').onclick = killClones;
 document.getElementById('btnPin').onclick = async () => {
     const tabs = await chrome.tabs.query({});
-    for (const tab of tabs) {
-        await chrome.tabs.update(tab.id, { pinned: true });
+    if (tabs.length > 0) {
+        // If any tab is not pinned, pin all. Otherwise, unpin all.
+        const willBePinned = tabs.some(tab => !tab.pinned);
+        for (const tab of tabs) {
+            await chrome.tabs.update(tab.id, { pinned: willBePinned });
+        }
+        document.getElementById("status").textContent = willBePinned ? "All tabs pinned!" : "All tabs unpinned!";
     }
-    document.getElementById("status").textContent = "All tabs pinned!";
 };
 
 document.getElementById('btnMuted').onclick = async () => {
