@@ -65,13 +65,20 @@ document.getElementById('btnTarget').onclick = highlightClones;
 document.getElementById('btnKill').onclick = killClones;
 document.getElementById('btnPin').onclick = async () => {
     const tabs = await chrome.tabs.query({});
-    tabs.forEach((tab) => {
-        chrome.tabs.update(tab.id, { pinned: true });
-    });
+    for (const tab of tabs) {
+        await chrome.tabs.update(tab.id, { pinned: true });
+    }
+    document.getElementById("status").textContent = "All tabs pinned!";
 };
+
 document.getElementById('btnMuted').onclick = async () => {
     const tabs = await chrome.tabs.query({});
-    tabs.forEach((tab) => {
-        chrome.tabs.update(tab.id, { muted: !tab.mutedInfo.muted });
-    });
+    if (tabs.length > 0) {
+        // Check the state of the first tab to decide whether to mute or unmute all
+        const willBeMuted = !tabs[0].mutedInfo.muted;
+        for (const tab of tabs) {
+            await chrome.tabs.update(tab.id, { muted: willBeMuted });
+        }
+        document.getElementById("status").textContent = willBeMuted ? "All tabs muted!" : "All tabs unmuted!";
+    }
 };
