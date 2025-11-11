@@ -2,10 +2,7 @@ body {
     background: #F2F2F2;
     height: 120px;
     width: 120px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
+    text-align: center;
 }
 
 button {
@@ -32,4 +29,8 @@ p {
     color: #797979;
     text-align: center;
     margin: 2px;
+}
+
+#status {
+    margin-bottom: 10px;
 }
