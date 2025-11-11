@@ -1,120 +1,77 @@
-function highlightClones() {
-    var tabListBefor = [];
-    var tabListAfter = [];
-    var tabIndex = [];
-    chrome.windows.getAll({
-        populate: true
-    }, function (windows) {
-        windows.forEach(function (window) {
-            window.tabs.forEach(function (tab) {
-                tabListBefor.push({
-                    tabUrl: tab.url,
-                    tabId: tab.id,
-                    tabIndex: tab.index
-                });
-            });
-        });
-        for (var i = 0; i < tabListBefor.length; i++) {
-            for (var j = 0; j < tabListBefor.length; j++) {
-                if (tabListBefor[i].tabUrl === tabListBefor[j].tabUrl && tabListBefor[i].tabId !== tabListBefor[j].tabId) {
-                    tabListAfter.push(tabListBefor[j]);
-                }
+// A more efficient way to find duplicate tabs.
+// Returns an array of duplicate tabs. The first tab with a given URL is not included.
+async function findDuplicateTabs() {
+    const tabs = await chrome.tabs.query({ windowType: 'normal' });
+    const urlMap = new Map();
+    const duplicates = [];
+
+    for (const tab of tabs) {
+        if (tab.url) {
+            if (urlMap.has(tab.url)) {
+                // The tab in the map is the "original", this one is a duplicate
+                duplicates.push(tab);
+            } else {
+                urlMap.set(tab.url, tab);
             }
         }
-        console.log(tabListAfter);
-        if (tabListAfter.length === 0) {
-            document.getElementById("status").innerHTML = "All clear!";
-        }
-        else {
-            for (var e = 0; e < tabListAfter.length; e++) {
-                tabIndex.push(tabListAfter[e].tabIndex);
-            }
-            chrome.tabs.highlight({
-                tabs: tabIndex
-            });
-            document.getElementById("status").innerHTML = "Got something!";
-        }
-    });
+    }
+    return duplicates;
 }
 
-function killClones() {
-    var tabListBefor = [];
-    var tabListAfter = [];
-    var tabId = [];
-    chrome.windows.getAll({
-        populate: true
-    }, function (windows) {
-        windows.forEach(function (window) {
-            window.tabs.forEach(function (tab) {
-                tabListBefor.push({
-                    tabUrl: tab.url,
-                    tabId: tab.id,
-                    tabIndex: tab.index
-                });
-            });
-        });
-        for (var i = 0; i < tabListBefor.length; i++) {
-            for (var j = 0; j < tabListBefor.length; j++) {
-                if (tabListBefor[i].tabUrl === tabListBefor[j].tabUrl && tabListBefor[i].tabIndex < tabListBefor[j].tabIndex && tabListBefor[i].tabId !== tabListBefor[j].tabId) {
-                    tabListAfter.push(tabListBefor[j]);
-                }
-            }
-        }
-        if (tabListAfter.length === 0) {
-            document.getElementById("status").innerHTML = "No targets!";
-        }
-        else {
-            for (var e = 0; e < tabListAfter.length; e++) {
-                tabId.push(tabListAfter[e].tabId);
-            }
-            chrome.tabs.remove(tabId);
-            document.getElementById("status").innerHTML = "Done!";
-        }
-    });
+async function highlightClones() {
+    const duplicateTabs = await findDuplicateTabs();
+    const statusElement = document.getElementById("status");
+
+    if (duplicateTabs.length === 0) {
+        statusElement.textContent = "All clear!";
+    } else {
+        // To highlight all duplicates, we also need the "original" tabs.
+        // Let's find them.
+        const urls = duplicateTabs.map(tab => tab.url);
+        const allTabs = await chrome.tabs.query({});
+        const tabsToHighlight = allTabs.filter(tab => urls.includes(tab.url));
+        
+        const tabIndices = tabsToHighlight.map(tab => tab.index);
+        chrome.tabs.highlight({ tabs: tabIndices });
+        statusElement.textContent = `Found ${duplicateTabs.length} duplicates!`;
+    }
 }
 
-function pinAll() {
-    chrome.tabs.query({
-        currentWindow: true
-    }, function (tabs) {
-        var isAllPinned = true;
-        for (var i in tabs) {
-            if (!tabs[i].pinned) {
-                isAllPinned = false;
-                break;
-            }
-        }
-        if (isAllPinned == true) tabs.reverse();
-        for (var j in tabs) {
-            chrome.tabs.update(tabs[j].id, { pinned: !isAllPinned });
-        }
+async function killClones() {
+    const duplicateTabs = await findDuplicateTabs();
+    const statusElement = document.getElementById("status");
 
-        if (!allPinned) document.getElementById("status").innerHTML = "All Pinned!";
-        else document.getElementById("status").innerHTML = "Unpinned!";
-    });
+    if (duplicateTabs.length === 0) {
+        statusElement.textContent = "No targets!";
+    } else {
+        const tabIds = duplicateTabs.map(tab => tab.id);
+        await chrome.tabs.remove(tabIds);
+        statusElement.textContent = `Killed ${tabIds.length} clones!`;
+        // After closing tabs, we should update the icon state
+        checkTabs();
+    }
 }
 
-function muteAll() {
-    chrome.tabs.query({
-        currentWindow: true
-    }, function (tabs) {
-        var allMuted = true;
-        for (var i in tabs) {
-            if (!tabs[i].mutedInfo.muted) {
-                allMuted = false;
-                break;
-            }
-        }
-        for (var j in tabs) {
-            chrome.tabs.update(tabs[j].id, { muted: !allMuted });
-        }
-
-        if (!allMuted) document.getElementById("status").innerHTML = "All Muted!";
-        else document.getElementById("status").innerHTML = "Unmuted!";
-    });
+// This function is from eventPage.js, it's needed to update the icon
+async function checkTabs() {
+    const duplicateTabs = await findDuplicateTabs();
+    const iconPath = duplicateTabs.length === 0
+        ? "images/KillClonesIcon32.png"
+        : "images/KillClonesRedIcon32.png";
+    chrome.action.setIcon({ path: iconPath });
 }
 
 document.getElementById('btnTarget').onclick = highlightClones;
 document.getElementById('btnKill').onclick = killClones;
-document.getElementById('btnPin').onclick = pinAll;
-document.getElementById('btnMuted').onclick = muteAll;
+document.getElementById('btnPin').onclick = async () => {
+    const tabs = await chrome.tabs.query({});
+    tabs.forEach((tab) => {
+        chrome.tabs.update(tab.id, { pinned: true });
+    });
+};
+document.getElementById('btnMuted').onclick = async () => {
+    const tabs = await chrome.tabs.query({});
+    tabs.forEach((tab) => {
+        chrome.tabs.update(tab.id, { muted: !tab.mutedInfo.muted });
+    });
+};
