@@ -15,7 +15,7 @@ async function highlightClones() {
         
         const tabIndices = tabsToHighlight.map(tab => tab.index);
         chrome.tabs.highlight({ tabs: tabIndices });
-        statusElement.textContent = `Found ${duplicateTabs.length} duplicates!`;
+        statusElement.textContent = `Found ${duplicateTabs.length} duplicate${duplicateTabs.length === 1 ? '' : 's'}!`;
     }
 }
 
@@ -28,7 +28,7 @@ async function killClones() {
     } else {
         const tabIds = duplicateTabs.map(tab => tab.id);
         await chrome.tabs.remove(tabIds);
-        statusElement.textContent = `Killed ${tabIds.length} clones!`;
+        statusElement.textContent = `Killed ${tabIds.length} clone${tabIds.length === 1 ? '' : 's'}!`;
         // After closing tabs, we should update the icon state
         checkTabs();
     }
