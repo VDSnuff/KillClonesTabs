@@ -60,8 +60,8 @@ document.getElementById('btnPin').onclick = async () => {
 document.getElementById('btnMuted').onclick = async () => {
     const tabs = await chrome.tabs.query({});
     if (tabs.length > 0) {
-        // Check the state of the first tab to decide whether to mute or unmute all
-        const willBeMuted = !tabs[0].mutedInfo.muted;
+        // If any tab is not muted, mute all. Otherwise, unmute all.
+        const willBeMuted = tabs.some(tab => !tab.mutedInfo.muted);
         for (const tab of tabs) {
             await chrome.tabs.update(tab.id, { muted: willBeMuted });
         }
