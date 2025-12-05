@@ -1,5 +1,8 @@
 # Changelog
 
+### Version 1.16
+*   **UI:** Updated the "Kill duplicates" icon to a kitchen knife design.
+
 ### Version 1.15
 *   **UI:** Replaced the "Axe" icon with a "Knife" icon for the "Kill duplicates" button.
 
