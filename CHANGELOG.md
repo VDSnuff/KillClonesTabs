@@ -1,5 +1,8 @@
 # Changelog
 
+### Version 1.17
+*   **UI:** Adjusted the size of the "Knife" icon to visually match the other icons.
+
 ### Version 1.16
 *   **UI:** Updated the "Kill duplicates" icon to a kitchen knife design.
 
