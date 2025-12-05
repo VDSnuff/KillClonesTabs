@@ -1,5 +1,8 @@
 # Changelog
 
+### Version 1.20
+*   **UI:** Compacted the popup layout by reducing margins and overall height.
+
 ### Version 1.19
 *   **UI:** Reduced the size of the "Settings" icon for better visual balance.
 
