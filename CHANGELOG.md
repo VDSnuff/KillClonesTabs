@@ -1,5 +1,8 @@
 # Changelog
 
+### Version 1.14
+*   **UI:** Restored the "Axe" icon for the "Kill duplicates" button using a new SVG design.
+
 ### Version 1.13
 *   **UI:** Replaced PNG icons with modern SVG icons for better scalability and visual consistency.
 *   **UI:** Updated "Kill" icon to a trash can metaphor for clarity.
