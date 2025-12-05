@@ -17,11 +17,11 @@ button:hover {
     opacity: 1;
 }
 
-img {
-    padding-top: 4px;
+svg {
     width: 24px;
     height: 24px;
     margin: 6px;
+    vertical-align: middle;
 }
 
 p {

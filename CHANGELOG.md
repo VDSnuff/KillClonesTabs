@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 1.13
+*   **UI:** Replaced PNG icons with modern SVG icons for better scalability and visual consistency.
+*   **UI:** Updated "Kill" icon to a trash can metaphor for clarity.
+
 ### Version 1.12
 *   **UI:** Updated the top separator line to match the style of the bottom separator.
 
