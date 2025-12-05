@@ -1,5 +1,8 @@
 # Changelog
 
+### Version 1.18
+*   **UI:** Increased the size of the "Knife" icon for better visibility.
+
 ### Version 1.17
 *   **UI:** Adjusted the size of the "Knife" icon to visually match the other icons.
 
