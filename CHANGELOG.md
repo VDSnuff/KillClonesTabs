@@ -1,5 +1,8 @@
 # Changelog
 
+### Version 1.21
+*   **UI:** Updated the font to a modern system font stack (San Francisco, Segoe UI, Roboto) for a cleaner look.
+
 ### Version 1.20
 *   **UI:** Compacted the popup layout by reducing margins and overall height.
 
