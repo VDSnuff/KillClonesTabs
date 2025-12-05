@@ -26,6 +26,24 @@
     </label>
     <span class="note">Treat <code>example.com</code> and <code>example.com#section</code> as the same.</span>
 
+    <label>
+        <input type="checkbox" id="ignoreWWW">
+        Ignore "www" subdomain
+    </label>
+    <span class="note">Treat <code>http://example.com</code> and <code>http://www.example.com</code> as the same.</span>
+
+    <label>
+        <input type="checkbox" id="ignoreQuery">
+        Ignore URL parameters
+    </label>
+    <span class="note">Treat <code>example.com</code> and <code>example.com?source=email</code> as the same.</span>
+
+    <label>
+        <input type="checkbox" id="ignoreProtocol">
+        Ignore protocol (HTTP/HTTPS)
+    </label>
+    <span class="note">Treat <code>http://example.com</code> and <code>https://example.com</code> as the same.</span>
+
     <script src="options.js"></script>
 </body>
 </html>

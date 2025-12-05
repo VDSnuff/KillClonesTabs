@@ -2,10 +2,25 @@
 export function normalizeUrl(url, settings) {
     let normalized = url;
 
+    if (settings.ignoreProtocol) {
+        normalized = normalized.replace(/^https?:\/\//, 'http://');
+    }
+
+    if (settings.ignoreWWW) {
+        normalized = normalized.replace(/:\/\/(www\.)/, '://');
+    }
+
     if (settings.ignoreAnchors) {
         const anchorIndex = normalized.indexOf('#');
         if (anchorIndex !== -1) {
             normalized = normalized.substring(0, anchorIndex);
+        }
+    }
+
+    if (settings.ignoreQuery) {
+        const queryIndex = normalized.indexOf('?');
+        if (queryIndex !== -1) {
+            normalized = normalized.substring(0, queryIndex);
         }
     }
 
@@ -26,7 +41,10 @@ export async function findDuplicateTabs() {
     // Fetch settings with defaults
     const settings = await chrome.storage.sync.get({
         ignoreTrailingSlash: true,
-        ignoreAnchors: false
+        ignoreAnchors: false,
+        ignoreWWW: false,
+        ignoreQuery: false,
+        ignoreProtocol: false
     });
 
     const urlMap = new Map();

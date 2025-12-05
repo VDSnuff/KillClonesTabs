@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 1.9
+*   **New:** Added setting to ignore "www" subdomain (e.g., treat `http://example.com` and `http://www.example.com` as duplicates).
+*   **New:** Added setting to ignore URL parameters (e.g., treat `example.com` and `example.com?source=email` as duplicates).
+*   **New:** Added setting to ignore protocol (e.g., treat `http://example.com` and `https://example.com` as duplicates).
+
 ### Version 1.8
 *   **New:** Added an Options page for customizing duplicate detection settings.
 *   **New:** Added setting to ignore anchors/hashes (e.g., treat `example.com` and `example.com#section` as duplicates).

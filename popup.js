@@ -11,7 +11,10 @@ async function highlightClones() {
         // Let's find them.
         const settings = await chrome.storage.sync.get({
             ignoreTrailingSlash: true,
-            ignoreAnchors: false
+            ignoreAnchors: false,
+            ignoreWWW: false,
+            ignoreQuery: false,
+            ignoreProtocol: false
         });
 
         const urls = duplicateTabs.map(tab => normalizeUrl(tab.url, settings));
