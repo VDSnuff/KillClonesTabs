@@ -1,5 +1,8 @@
 # Changelog
 
+### Version 1.19
+*   **UI:** Reduced the size of the "Settings" icon for better visual balance.
+
 ### Version 1.18
 *   **UI:** Increased the size of the "Knife" icon for better visibility.
 
