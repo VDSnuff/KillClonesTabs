@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kill The Clones Settings</title>
+    <style>
+        body { padding: 10px; font-family: "Segoe UI", Tahoma, sans-serif; font-size: 14px; min-width: 300px; }
+        h1 { font-size: 16px; margin-top: 0; }
+        label { display: block; margin-bottom: 10px; cursor: pointer; }
+        input[type="checkbox"] { margin-right: 8px; }
+        .note { font-size: 12px; color: #666; margin-left: 24px; margin-top: -5px; display: block; margin-bottom: 15px;}
+    </style>
+</head>
+<body>
+    <h1>Duplicate Detection Settings</h1>
+    
+    <label>
+        <input type="checkbox" id="ignoreTrailingSlash">
+        Ignore trailing slashes
+    </label>
+    <span class="note">Treat <code>example.com</code> and <code>example.com/</code> as the same.</span>
+
+    <label>
+        <input type="checkbox" id="ignoreAnchors">
+        Ignore anchors / hashes
+    </label>
+    <span class="note">Treat <code>example.com</code> and <code>example.com#section</code> as the same.</span>
+
+    <script src="options.js"></script>
+</body>
+</html>

@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 1.8
+*   **New:** Added an Options page for customizing duplicate detection settings.
+*   **New:** Added setting to ignore anchors/hashes (e.g., treat `example.com` and `example.com#section` as duplicates).
+*   **Improved:** "Ignore trailing slashes" is now a configurable setting (enabled by default).
+
 ### Version 1.7
 *   **Improved:** URLs with and without a trailing slash (e.g., `example.com` and `example.com/`) are now treated as duplicates.
 
