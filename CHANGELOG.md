@@ -1,5 +1,8 @@
 # Changelog
 
+### Version 1.12
+*   **UI:** Updated the top separator line to match the style of the bottom separator.
+
 ### Version 1.11
 *   **UI:** Added a separator line before the Settings button for better visual distinction.
 *   **UI:** Increased popup height to accommodate the separator.
