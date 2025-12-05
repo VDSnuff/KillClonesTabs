@@ -76,3 +76,11 @@ document.getElementById('btnMuted').onclick = async () => {
         document.getElementById("status").textContent = willBeMuted ? "All tabs muted!" : "All tabs unmuted!";
     }
 };
+
+document.getElementById('btnSettings').onclick = () => {
+    if (chrome.runtime.openOptionsPage) {
+        chrome.runtime.openOptionsPage();
+    } else {
+        window.open(chrome.runtime.getURL('options.html'));
+    }
+};

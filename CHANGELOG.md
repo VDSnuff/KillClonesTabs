@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 1.10
+*   **New:** Added a "Settings" button to the popup for quick access to options.
+*   **UI:** Slightly increased popup size to accommodate the new button.
+
 ### Version 1.9
 *   **New:** Added setting to ignore "www" subdomain (e.g., treat `http://example.com` and `http://www.example.com` as duplicates).
 *   **New:** Added setting to ignore URL parameters (e.g., treat `example.com` and `example.com?source=email` as duplicates).
