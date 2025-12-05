@@ -1,5 +1,12 @@
 # Changelog
 
+### Version 1.7
+*   **Improved:** URLs with and without a trailing slash (e.g., `example.com` and `example.com/`) are now treated as duplicates.
+
+### Version 1.6
+*   **Improved:** Mute/Unmute logic is now consistent with Pin/Unpin.
+*   **Improved:** Status messages now correctly handle singular/plural forms.
+
 ### Version 1.5
 *   **New:**
     *   Performance Boost: Replaced the slow, looping method of finding duplicate tabs with a much faster one.

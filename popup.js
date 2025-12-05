@@ -1,4 +1,4 @@
-import { findDuplicateTabs } from './utils.js';
+import { findDuplicateTabs, normalizeUrl } from './utils.js';
 
 async function highlightClones() {
     const duplicateTabs = await findDuplicateTabs();
@@ -9,9 +9,9 @@ async function highlightClones() {
     } else {
         // To highlight all duplicates, we also need the "original" tabs.
         // Let's find them.
-        const urls = duplicateTabs.map(tab => tab.url);
+        const urls = duplicateTabs.map(tab => normalizeUrl(tab.url));
         const allTabs = await chrome.tabs.query({});
-        const tabsToHighlight = allTabs.filter(tab => urls.includes(tab.url));
+        const tabsToHighlight = allTabs.filter(tab => urls.includes(normalizeUrl(tab.url)));
         
         const tabIndices = tabsToHighlight.map(tab => tab.index);
         chrome.tabs.highlight({ tabs: tabIndices });
