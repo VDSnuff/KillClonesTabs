@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 1.11
+*   **UI:** Added a separator line before the Settings button for better visual distinction.
+*   **UI:** Increased popup height to accommodate the separator.
+
 ### Version 1.10
 *   **New:** Added a "Settings" button to the popup for quick access to options.
 *   **UI:** Slightly increased popup size to accommodate the new button.
