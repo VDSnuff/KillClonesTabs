@@ -1,5 +1,8 @@
 # Changelog
 
+### Version 1.27
+*   **UI:** Reverted the layout compaction to restore comfortable spacing, while keeping the increased font size.
+
 ### Version 1.26
 *   **UI:** Increased font size for better readability and further compacted the layout by reducing margins and height.
 
