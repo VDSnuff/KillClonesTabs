@@ -74,8 +74,29 @@ document.getElementById('btnMuted').onclick = async () => {
             await chrome.tabs.update(tab.id, { muted: willBeMuted });
         }
         document.getElementById("status").textContent = willBeMuted ? "All tabs muted!" : "All tabs unmuted!";
+        updateMuteButtonState();
     }
 };
+
+async function updateMuteButtonState() {
+    const tabs = await chrome.tabs.query({});
+    const isAnyUnmuted = tabs.some(tab => !tab.mutedInfo.muted);
+    const btnMuted = document.getElementById('btnMuted');
+    const svg = btnMuted.querySelector('svg');
+    
+    if (isAnyUnmuted) {
+        // Show Unmuted icon (Sound waves)
+        svg.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>';
+        btnMuted.title = "Mute All Tabs";
+    } else {
+        // Show Muted icon (Crossed out)
+        svg.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line>';
+        btnMuted.title = "Unmute All Tabs";
+    }
+}
+
+// Initialize button state
+updateMuteButtonState();
 
 document.getElementById('btnSettings').onclick = () => {
     if (chrome.runtime.openOptionsPage) {

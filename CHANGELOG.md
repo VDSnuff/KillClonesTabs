@@ -1,5 +1,8 @@
 # Changelog
 
+### Version 1.22
+*   **UI:** The "Mute" button icon now dynamically updates to reflect the current state of tabs (Muted/Unmuted).
+
 ### Version 1.21
 *   **UI:** Updated the font to a modern system font stack (San Francisco, Segoe UI, Roboto) for a cleaner look.
 
