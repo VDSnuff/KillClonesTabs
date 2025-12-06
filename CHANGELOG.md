@@ -1,5 +1,8 @@
 # Changelog
 
+### Version 1.26
+*   **UI:** Increased font size for better readability and further compacted the layout by reducing margins and height.
+
 ### Version 1.25
 *   **UI:** The "Show duplicates" button icon now dynamically updates. It shows a target crosshair inside the magnifying glass when duplicates are found, and reverts to a normal magnifying glass when there are none.
 
