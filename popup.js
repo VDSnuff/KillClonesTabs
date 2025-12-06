@@ -62,6 +62,7 @@ document.getElementById('btnPin').onclick = async () => {
             await chrome.tabs.update(tab.id, { pinned: willBePinned });
         }
         document.getElementById("status").textContent = willBePinned ? "All tabs pinned!" : "All tabs unpinned!";
+        updatePinButtonState();
     }
 };
 
@@ -95,8 +96,26 @@ async function updateMuteButtonState() {
     }
 }
 
+async function updatePinButtonState() {
+    const tabs = await chrome.tabs.query({});
+    const isAnyUnpinned = tabs.some(tab => !tab.pinned);
+    const btnPin = document.getElementById('btnPin');
+    const svg = btnPin.querySelector('svg');
+    
+    if (isAnyUnpinned) {
+        // Show Pin icon (Action: Pin All)
+        svg.innerHTML = '<line x1="12" y1="17" x2="12" y2="22"></line><path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24Z"></path>';
+        btnPin.title = "Pin All Tabs";
+    } else {
+        // Show Unpin icon (Action: Unpin All)
+        svg.innerHTML = '<line x1="12" y1="17" x2="12" y2="22"></line><path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24Z"></path><line x1="3" y1="3" x2="21" y2="21"></line>';
+        btnPin.title = "Unpin All Tabs";
+    }
+}
+
 // Initialize button state
 updateMuteButtonState();
+updatePinButtonState();
 
 document.getElementById('btnSettings').onclick = () => {
     if (chrome.runtime.openOptionsPage) {
