@@ -1,5 +1,8 @@
 # Changelog
 
+### Version 1.25
+*   **UI:** The "Show duplicates" button icon now dynamically updates. It shows a target crosshair inside the magnifying glass when duplicates are found, and reverts to a normal magnifying glass when there are none.
+
 ### Version 1.24
 *   **UI:** The "Knife" icon now blinks red when killing duplicate tabs for better visual feedback.
 

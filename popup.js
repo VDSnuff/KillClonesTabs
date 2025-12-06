@@ -46,6 +46,7 @@ async function killClones() {
         statusElement.textContent = `Killed ${tabIds.length} clone${tabIds.length === 1 ? '' : 's'}!`;
         // After closing tabs, we should update the icon state
         checkTabs();
+        updateTargetButtonState();
     }
 }
 
@@ -120,9 +121,26 @@ async function updatePinButtonState() {
     }
 }
 
+async function updateTargetButtonState() {
+    const duplicateTabs = await findDuplicateTabs();
+    const btnTarget = document.getElementById('btnTarget');
+    const svg = btnTarget.querySelector('svg');
+
+    if (duplicateTabs.length > 0) {
+        // Show Target icon (Magnifying glass with crosshair)
+        svg.innerHTML = '<circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="6" x2="11" y2="16"></line><line x1="6" y1="11" x2="16" y2="11"></line>';
+        btnTarget.title = "Show duplicates";
+    } else {
+        // Show Normal icon (Magnifying glass)
+        svg.innerHTML = '<circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>';
+        btnTarget.title = "No duplicates found";
+    }
+}
+
 // Initialize button state
 updateMuteButtonState();
 updatePinButtonState();
+updateTargetButtonState();
 
 document.getElementById('btnSettings').onclick = () => {
     if (chrome.runtime.openOptionsPage) {
