@@ -35,3 +35,12 @@ p {
 #status {
     margin-bottom: 5px;
 }
+
+@keyframes blinkRed {
+    0%, 100% { stroke: #555; }
+    50% { stroke: red; }
+}
+
+.blink-red {
+    animation: blinkRed 0.3s ease-in-out 3;
+}

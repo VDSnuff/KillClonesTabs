@@ -34,6 +34,13 @@ async function killClones() {
     if (duplicateTabs.length === 0) {
         statusElement.textContent = "No targets!";
     } else {
+        const btnKill = document.getElementById('btnKill');
+        const svg = btnKill.querySelector('svg');
+        svg.classList.add('blink-red');
+        setTimeout(() => {
+            svg.classList.remove('blink-red');
+        }, 900); // 0.3s * 3 = 900ms
+
         const tabIds = duplicateTabs.map(tab => tab.id);
         await chrome.tabs.remove(tabIds);
         statusElement.textContent = `Killed ${tabIds.length} clone${tabIds.length === 1 ? '' : 's'}!`;

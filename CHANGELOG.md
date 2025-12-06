@@ -1,5 +1,8 @@
 # Changelog
 
+### Version 1.24
+*   **UI:** The "Knife" icon now blinks red when killing duplicate tabs for better visual feedback.
+
 ### Version 1.23
 *   **UI:** The "Pin" button icon now dynamically updates to reflect the current state of tabs (Pinned/Unpinned).
 
