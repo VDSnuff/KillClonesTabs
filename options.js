@@ -80,12 +80,32 @@ function savePin() {
     });
 }
 
+let resetConfirmation = false;
+
 function resetPin() {
-    if (confirm("Forgot PIN?\n\nThis will DELETE your entire hidden list and remove the PIN protection.\n\nAre you sure?")) {
-        chrome.storage.sync.set({ protectionPin: '', hideList: '' }, () => {
-            location.reload();
-        });
+    const btn = document.getElementById('btnForgotPin');
+    
+    if (!resetConfirmation) {
+        resetConfirmation = true;
+        btn.textContent = "Are you sure? (Click again to DELETE list)";
+        btn.style.fontWeight = "bold";
+        
+        // Reset state after 3 seconds if not clicked again
+        setTimeout(() => {
+            resetConfirmation = false;
+            btn.textContent = "Forgot PIN? (Reset)";
+            btn.style.fontWeight = "normal";
+        }, 3000);
+        return;
     }
+
+    // Second click confirmed
+    chrome.storage.sync.set({
+        protectionPin: '',
+        hideList: ''
+    }, function() {
+        location.reload();
+    });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
