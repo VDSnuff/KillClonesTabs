@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Kill The Clones",
-  "version": "1.28",
+      "version": "1.31",
   "description": "Find and close duplicate tabs. Also highlights, pins, and mutes all tabs. Icon alerts you when duplicates are found.",
   "icons": {
     "16": "images/KillClonesIcon16.png",
