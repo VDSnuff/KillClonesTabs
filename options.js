@@ -88,12 +88,14 @@ function resetPin() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', restoreOptions);
-document.getElementById('ignoreTrailingSlash').addEventListener('change', saveOptions);
-document.getElementById('ignoreAnchors').addEventListener('change', saveOptions);
-document.getElementById('ignoreWWW').addEventListener('change', saveOptions);
-document.getElementById('ignoreQuery').addEventListener('change', saveOptions);
-document.getElementById('ignoreProtocol').addEventListener('change', saveOptions);
-document.getElementById('hideList').addEventListener('input', saveOptions);
-document.getElementById('btnSavePin').addEventListener('click', savePin);
-document.getElementById('btnForgotPin').addEventListener('click', resetPin);
+document.addEventListener('DOMContentLoaded', () => {
+    restoreOptions();
+    document.getElementById('ignoreTrailingSlash').addEventListener('change', saveOptions);
+    document.getElementById('ignoreAnchors').addEventListener('change', saveOptions);
+    document.getElementById('ignoreWWW').addEventListener('change', saveOptions);
+    document.getElementById('ignoreQuery').addEventListener('change', saveOptions);
+    document.getElementById('ignoreProtocol').addEventListener('change', saveOptions);
+    document.getElementById('hideList').addEventListener('input', saveOptions);
+    document.getElementById('btnSavePin').addEventListener('click', savePin);
+    document.getElementById('btnForgotPin').addEventListener('click', resetPin);
+});
