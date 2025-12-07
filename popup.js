@@ -194,8 +194,7 @@ document.getElementById('btnHideEvidence').onclick = async () => {
     const allTabs = await chrome.tabs.query({});
     const tabsToRemove = allTabs.filter(tab => {
         try {
-            const url = new URL(tab.url);
-            return domains.some(domain => url.hostname.includes(domain));
+            return domains.some(domain => tab.url.includes(domain));
         } catch (e) {
             return false;
         }
@@ -229,12 +228,24 @@ document.getElementById('btnAddHide').onclick = async () => {
     try {
         const url = new URL(tab.url);
         const domain = url.hostname;
+        const variations = [
+            domain,
+            `https://${domain}`,
+            `http://${domain}`
+        ];
         
         const settings = await chrome.storage.sync.get({ hideList: '' });
         let domains = settings.hideList.split('\n').map(d => d.trim()).filter(d => d.length > 0);
         
-        if (!domains.includes(domain)) {
-            domains.push(domain);
+        let added = false;
+        variations.forEach(v => {
+            if (!domains.includes(v)) {
+                domains.push(v);
+                added = true;
+            }
+        });
+
+        if (added) {
             await chrome.storage.sync.set({ hideList: domains.join('\n') });
             document.getElementById("status").textContent = "Added!";
             setTimeout(() => { document.getElementById("status").textContent = "Manage your tabs"; }, 1500);
