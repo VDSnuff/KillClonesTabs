@@ -47,9 +47,33 @@
     <hr style="border: 0; border-top: 1px solid #ccc; margin: 15px 0;">
 
     <h1>Hide Evidence Settings</h1>
-    <label for="hideList" style="cursor: default;">Domains to hide (one per line):</label>
-    <textarea id="hideList" rows="5" style="width: 100%; box-sizing: border-box; resize: vertical; margin-bottom: 10px; font-family: monospace;"></textarea>
-    <span class="note" style="margin-left: 0;">Tabs matching these domains will be closed and removed from history by the "Hide Evidence" button.</span>
+    
+    <!-- Auth Section -->
+    <div id="authSection" style="display:none; margin-bottom: 15px; background: #f9f9f9; padding: 10px; border-radius: 4px; border: 1px solid #eee;">
+        <label for="pinInput" style="cursor: default; font-weight: bold;">Enter PIN to view list:</label>
+        <div style="display: flex; gap: 10px;">
+            <input type="password" id="pinInput" placeholder="****" style="padding: 5px; width: 100px;">
+            <button id="btnAuth" style="padding: 5px 15px; cursor: pointer;">Unlock</button>
+        </div>
+        <p id="authError" style="color: red; font-size: 12px; margin: 5px 0 0 0; display: none;">Incorrect PIN</p>
+    </div>
+
+    <!-- Content Section -->
+    <div id="contentSection">
+        <label for="hideList" style="cursor: default;">Domains to hide (one per line):</label>
+        <textarea id="hideList" rows="5" style="width: 100%; box-sizing: border-box; resize: vertical; margin-bottom: 10px; font-family: monospace;"></textarea>
+        <span class="note" style="margin-left: 0;">Tabs matching these domains will be closed and removed from history by the "Hide Evidence" button.</span>
+        
+        <div style="margin-top: 15px; padding-top: 10px; border-top: 1px dashed #ccc;">
+            <label for="newPin" style="cursor: default; font-weight: bold;">Protection PIN:</label>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <input type="password" id="newPin" placeholder="New PIN" style="padding: 5px; width: 100px;">
+                <button id="btnSavePin" style="padding: 5px 15px; cursor: pointer;">Set/Update PIN</button>
+                <span class="note" style="margin: 0;">Leave empty to remove protection.</span>
+            </div>
+            <p id="pinStatus" style="color: green; font-size: 12px; margin: 5px 0 0 0; display: none;"></p>
+        </div>
+    </div>
 
     <script src="options.js"></script>
 </body>

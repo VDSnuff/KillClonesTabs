@@ -14,8 +14,6 @@ function saveOptions() {
         ignoreQuery: ignoreQuery,
         ignoreProtocol: ignoreProtocol,
         hideList: hideList
-    }, () => {
-        // Update status to let user know options were saved.
     });
 }
 
@@ -28,7 +26,8 @@ function restoreOptions() {
         ignoreWWW: false,
         ignoreQuery: false,
         ignoreProtocol: false,
-        hideList: ''
+        hideList: '',
+        protectionPin: ''
     }, (items) => {
         document.getElementById('ignoreTrailingSlash').checked = items.ignoreTrailingSlash;
         document.getElementById('ignoreAnchors').checked = items.ignoreAnchors;
@@ -36,6 +35,48 @@ function restoreOptions() {
         document.getElementById('ignoreQuery').checked = items.ignoreQuery;
         document.getElementById('ignoreProtocol').checked = items.ignoreProtocol;
         document.getElementById('hideList').value = items.hideList;
+
+        // PIN Logic
+        const authSection = document.getElementById('authSection');
+        const contentSection = document.getElementById('contentSection');
+        
+        if (items.protectionPin) {
+            // Locked
+            authSection.style.display = 'block';
+            contentSection.style.display = 'none';
+            
+            document.getElementById('btnAuth').onclick = () => {
+                const input = document.getElementById('pinInput').value;
+                if (input === items.protectionPin) {
+                    authSection.style.display = 'none';
+                    contentSection.style.display = 'block';
+                    document.getElementById('newPin').value = items.protectionPin; // Pre-fill for editing
+                } else {
+                    const err = document.getElementById('authError');
+                    err.style.display = 'block';
+                    setTimeout(() => err.style.display = 'none', 2000);
+                }
+            };
+            
+            // Allow Enter key to unlock
+            document.getElementById('pinInput').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') document.getElementById('btnAuth').click();
+            });
+        } else {
+            // Unlocked
+            authSection.style.display = 'none';
+            contentSection.style.display = 'block';
+        }
+    });
+}
+
+function savePin() {
+    const newPin = document.getElementById('newPin').value;
+    chrome.storage.sync.set({ protectionPin: newPin }, () => {
+        const status = document.getElementById('pinStatus');
+        status.textContent = newPin ? 'PIN Set!' : 'Protection Removed!';
+        status.style.display = 'block';
+        setTimeout(() => status.style.display = 'none', 2000);
     });
 }
 
@@ -46,3 +87,4 @@ document.getElementById('ignoreWWW').addEventListener('change', saveOptions);
 document.getElementById('ignoreQuery').addEventListener('change', saveOptions);
 document.getElementById('ignoreProtocol').addEventListener('change', saveOptions);
 document.getElementById('hideList').addEventListener('input', saveOptions);
+document.getElementById('btnSavePin').addEventListener('click', savePin);
