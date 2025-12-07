@@ -51,9 +51,10 @@
     <!-- Auth Section -->
     <div id="authSection" style="display:none; margin-bottom: 15px; background: #f9f9f9; padding: 10px; border-radius: 4px; border: 1px solid #eee;">
         <label for="pinInput" style="cursor: default; font-weight: bold;">Enter PIN to view list:</label>
-        <div style="display: flex; gap: 10px;">
+        <div style="display: flex; gap: 10px; align-items: center;">
             <input type="password" id="pinInput" placeholder="****" style="padding: 5px; width: 100px;">
             <button id="btnAuth" style="padding: 5px 15px; cursor: pointer;">Unlock</button>
+            <button id="btnForgotPin" style="padding: 5px 10px; cursor: pointer; font-size: 11px; color: #d9534f; background: none; border: 1px solid #d9534f; border-radius: 3px; margin-left: auto;">Forgot PIN? (Reset)</button>
         </div>
         <p id="authError" style="color: red; font-size: 12px; margin: 5px 0 0 0; display: none;">Incorrect PIN</p>
     </div>

@@ -80,6 +80,14 @@ function savePin() {
     });
 }
 
+function resetPin() {
+    if (confirm("Forgot PIN?\n\nThis will DELETE your entire hidden list and remove the PIN protection.\n\nAre you sure?")) {
+        chrome.storage.sync.set({ protectionPin: '', hideList: '' }, () => {
+            location.reload();
+        });
+    }
+}
+
 document.addEventListener('DOMContentLoaded', restoreOptions);
 document.getElementById('ignoreTrailingSlash').addEventListener('change', saveOptions);
 document.getElementById('ignoreAnchors').addEventListener('change', saveOptions);
@@ -88,3 +96,4 @@ document.getElementById('ignoreQuery').addEventListener('change', saveOptions);
 document.getElementById('ignoreProtocol').addEventListener('change', saveOptions);
 document.getElementById('hideList').addEventListener('input', saveOptions);
 document.getElementById('btnSavePin').addEventListener('click', savePin);
+document.getElementById('btnForgotPin').addEventListener('click', resetPin);
