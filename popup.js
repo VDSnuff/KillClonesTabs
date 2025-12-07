@@ -210,6 +210,31 @@ document.getElementById('btnHideEvidence').onclick = async () => {
     document.getElementById("status").textContent = "Evidence hidden!";
 };
 
+document.getElementById('btnAddHide').onclick = async () => {
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    if (!tab) return;
+
+    try {
+        const url = new URL(tab.url);
+        const domain = url.hostname;
+        
+        const settings = await chrome.storage.sync.get({ hideList: '' });
+        let domains = settings.hideList.split('\n').map(d => d.trim()).filter(d => d.length > 0);
+        
+        if (!domains.includes(domain)) {
+            domains.push(domain);
+            await chrome.storage.sync.set({ hideList: domains.join('\n') });
+            document.getElementById("status").textContent = "Added!";
+            setTimeout(() => { document.getElementById("status").textContent = "Manage your tabs"; }, 1500);
+        } else {
+             document.getElementById("status").textContent = "Saved!";
+             setTimeout(() => { document.getElementById("status").textContent = "Manage your tabs"; }, 1500);
+        }
+    } catch (e) {
+        document.getElementById("status").textContent = "Invalid URL";
+    }
+};
+
 // Initialize button state
 updateMuteButtonState();
 updatePinButtonState();
