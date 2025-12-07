@@ -45,3 +45,13 @@ p {
 .blink-red {
     animation: blinkRed 0.3s ease-in-out 3;
 }
+
+@keyframes scaleUp {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+    100% { transform: scale(1); }
+}
+
+.scale-up {
+    animation: scaleUp 0.5s ease-in-out;
+}

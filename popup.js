@@ -176,6 +176,12 @@ updateMuteButtonState();
 }
 
 document.getElementById('btnHideEvidence').onclick = async () => {
+    // Animation
+    const btn = document.getElementById('btnHideEvidence');
+    const svg = btn.querySelector('svg');
+    svg.classList.add('blink-red');
+    setTimeout(() => { svg.classList.remove('blink-red'); }, 900);
+
     const settings = await chrome.storage.sync.get({ hideList: '' });
     const domains = settings.hideList.split('\n').map(d => d.trim()).filter(d => d.length > 0);
 
@@ -211,6 +217,12 @@ document.getElementById('btnHideEvidence').onclick = async () => {
 };
 
 document.getElementById('btnAddHide').onclick = async () => {
+    // Animation
+    const btn = document.getElementById('btnAddHide');
+    const svg = btn.querySelector('svg');
+    svg.classList.add('blink-red', 'scale-up');
+    setTimeout(() => { svg.classList.remove('blink-red', 'scale-up'); }, 900);
+
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
     if (!tab) return;
 
