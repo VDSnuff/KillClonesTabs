@@ -5,13 +5,15 @@ function saveOptions() {
     const ignoreWWW = document.getElementById('ignoreWWW').checked;
     const ignoreQuery = document.getElementById('ignoreQuery').checked;
     const ignoreProtocol = document.getElementById('ignoreProtocol').checked;
+    const hideList = document.getElementById('hideList').value;
 
     chrome.storage.sync.set({
         ignoreTrailingSlash: ignoreTrailingSlash,
         ignoreAnchors: ignoreAnchors,
         ignoreWWW: ignoreWWW,
         ignoreQuery: ignoreQuery,
-        ignoreProtocol: ignoreProtocol
+        ignoreProtocol: ignoreProtocol,
+        hideList: hideList
     }, () => {
         // Update status to let user know options were saved.
     });
@@ -25,13 +27,15 @@ function restoreOptions() {
         ignoreAnchors: false,
         ignoreWWW: false,
         ignoreQuery: false,
-        ignoreProtocol: false
+        ignoreProtocol: false,
+        hideList: ''
     }, (items) => {
         document.getElementById('ignoreTrailingSlash').checked = items.ignoreTrailingSlash;
         document.getElementById('ignoreAnchors').checked = items.ignoreAnchors;
         document.getElementById('ignoreWWW').checked = items.ignoreWWW;
         document.getElementById('ignoreQuery').checked = items.ignoreQuery;
         document.getElementById('ignoreProtocol').checked = items.ignoreProtocol;
+        document.getElementById('hideList').value = items.hideList;
     });
 }
 
@@ -41,3 +45,4 @@ document.getElementById('ignoreAnchors').addEventListener('change', saveOptions)
 document.getElementById('ignoreWWW').addEventListener('change', saveOptions);
 document.getElementById('ignoreQuery').addEventListener('change', saveOptions);
 document.getElementById('ignoreProtocol').addEventListener('change', saveOptions);
+document.getElementById('hideList').addEventListener('input', saveOptions);

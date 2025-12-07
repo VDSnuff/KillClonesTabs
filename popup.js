@@ -132,10 +132,83 @@ async function updateTargetButtonState() {
         btnTarget.title = "Show duplicates";
     } else {
         // Show Normal icon (Magnifying glass)
-        svg.innerHTML = '<circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>';
-        btnTarget.title = "No duplicates found";
+svg.innerHTML = '<circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>';
+btnTarget.title = "No duplicates found";
+
+document.getElementById('btnHideEvidence').onclick = async () => {
+    const settings = await chrome.storage.sync.get({ hideList: '' });
+    const domains = settings.hideList.split('\n').map(d => d.trim()).filter(d => d.length > 0);
+
+    if (domains.length === 0) {
+        document.getElementById("status").textContent = "List is empty!";
+        return;
+    }
+
+    // 1. Close Tabs
+    const allTabs = await chrome.tabs.query({});
+    const tabsToRemove = allTabs.filter(tab => {
+        try {
+            const url = new URL(tab.url);
+            return domains.some(domain => url.hostname.includes(domain));
+        } catch (e) {
+            return false;
+        }
+    });
+
+    if (tabsToRemove.length > 0) {
+        await chrome.tabs.remove(tabsToRemove.map(t => t.id));
+    }
+
+    // 2. Delete from History
+    for (const domain of domains) {
+        const historyItems = await chrome.history.search({ text: domain, startTime: 0, maxResults: 10000 });
+        for (const item of historyItems) {
+            await chrome.history.deleteUrl({ url: item.url });
+        }
+    }
+
+    document.getElementById("status").textContent = "Evidence hidden!";
+};
+
+// Initialize button state
+updateMuteButtonState();
     }
 }
+
+document.getElementById('btnHideEvidence').onclick = async () => {
+    const settings = await chrome.storage.sync.get({ hideList: '' });
+    const domains = settings.hideList.split('\n').map(d => d.trim()).filter(d => d.length > 0);
+
+    if (domains.length === 0) {
+        document.getElementById("status").textContent = "List is empty!";
+        return;
+    }
+
+    // 1. Close Tabs
+    const allTabs = await chrome.tabs.query({});
+    const tabsToRemove = allTabs.filter(tab => {
+        try {
+            const url = new URL(tab.url);
+            return domains.some(domain => url.hostname.includes(domain));
+        } catch (e) {
+            return false;
+        }
+    });
+
+    if (tabsToRemove.length > 0) {
+        await chrome.tabs.remove(tabsToRemove.map(t => t.id));
+    }
+
+    // 2. Delete from History
+    for (const domain of domains) {
+        const historyItems = await chrome.history.search({ text: domain, startTime: 0, maxResults: 10000 });
+        for (const item of historyItems) {
+            await chrome.history.deleteUrl({ url: item.url });
+        }
+    }
+
+    document.getElementById("status").textContent = "Evidence hidden!";
+};
 
 // Initialize button state
 updateMuteButtonState();
