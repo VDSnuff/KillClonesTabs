@@ -126,6 +126,28 @@ document.getElementById('btnSort').onclick = async () => {
     document.getElementById("status").textContent = "Tabs sorted!";
 };
 
+document.getElementById('btnGroup').onclick = async () => {
+    const tabs = await chrome.tabs.query({ currentWindow: true });
+    
+    tabs.sort((a, b) => {
+        let domainA = '', domainB = '';
+        try { domainA = new URL(a.url).hostname; } catch (e) { domainA = a.url; }
+        try { domainB = new URL(b.url).hostname; } catch (e) { domainB = b.url; }
+        
+        // Reverse domain parts for better grouping (e.g., mail.google.com vs maps.google.com)
+        // Actually, simple hostname sort is usually what people expect for "group by domain"
+        
+        if (domainA < domainB) return -1;
+        if (domainA > domainB) return 1;
+        return 0;
+    });
+
+    const tabIds = tabs.map(t => t.id);
+    await chrome.tabs.move(tabIds, { index: 0 });
+    
+    document.getElementById("status").textContent = "Tabs grouped!";
+};
+
 document.getElementById('btnPin').onclick = async () => {
     const tabs = await chrome.tabs.query({});
     if (tabs.length > 0) {
