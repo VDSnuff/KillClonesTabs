@@ -1,29 +1,74 @@
 import { findDuplicateTabs, normalizeUrl } from './utils.js';
 
 async function highlightClones() {
-    const duplicateTabs = await findDuplicateTabs();
     const statusElement = document.getElementById("status");
+    
+    const settings = await chrome.storage.sync.get({
+        ignoreTrailingSlash: true,
+        ignoreAnchors: false,
+        ignoreWWW: false,
+        ignoreQuery: false,
+        ignoreProtocol: false
+    });
 
-    if (duplicateTabs.length === 0) {
+    const allTabs = await chrome.tabs.query({ windowType: 'normal' });
+    const urlMap = new Map();
+
+    // Group tabs by normalized URL
+    for (const tab of allTabs) {
+        if (!tab.url) continue;
+        const normalized = normalizeUrl(tab.url, settings);
+        if (!urlMap.has(normalized)) {
+            urlMap.set(normalized, []);
+        }
+        urlMap.get(normalized).push(tab);
+    }
+
+    let duplicatesFound = 0;
+    const allInvolvedTabIds = new Set();
+
+    // Process groups to move tabs
+    for (const [url, tabs] of urlMap) {
+        if (tabs.length > 1) {
+            duplicatesFound += (tabs.length - 1);
+            tabs.forEach(t => allInvolvedTabIds.add(t.id));
+
+            // The first tab is the "anchor". Move others next to it.
+            const primaryTab = tabs[0];
+            const tabsToMove = tabs.slice(1);
+            const tabIdsToMove = tabsToMove.map(t => t.id);
+
+            // Move tabs to be after the primary tab in the same window
+            await chrome.tabs.move(tabIdsToMove, {
+                windowId: primaryTab.windowId,
+                index: primaryTab.index + 1
+            });
+        }
+    }
+
+    if (duplicatesFound === 0) {
         statusElement.textContent = "All clear!";
     } else {
-        // To highlight all duplicates, we also need the "original" tabs.
-        // Let's find them.
-        const settings = await chrome.storage.sync.get({
-            ignoreTrailingSlash: true,
-            ignoreAnchors: false,
-            ignoreWWW: false,
-            ignoreQuery: false,
-            ignoreProtocol: false
-        });
+        statusElement.textContent = `Found ${duplicatesFound} duplicate${duplicatesFound === 1 ? '' : 's'}!`;
 
-        const urls = duplicateTabs.map(tab => normalizeUrl(tab.url, settings));
-        const allTabs = await chrome.tabs.query({});
-        const tabsToHighlight = allTabs.filter(tab => urls.includes(normalizeUrl(tab.url, settings)));
+        // Highlight tabs in the current window
+        const currentWindow = await chrome.windows.getCurrent();
+        // Re-query tabs to get updated indices
+        const currentWindowTabs = await chrome.tabs.query({ windowId: currentWindow.id });
         
-        const tabIndices = tabsToHighlight.map(tab => tab.index);
-        chrome.tabs.highlight({ tabs: tabIndices });
-        statusElement.textContent = `Found ${duplicateTabs.length} duplicate${duplicateTabs.length === 1 ? '' : 's'}!`;
+        const indicesToHighlight = [];
+        for (const tab of currentWindowTabs) {
+            if (allInvolvedTabIds.has(tab.id)) {
+                indicesToHighlight.push(tab.index);
+            }
+        }
+
+        if (indicesToHighlight.length > 0) {
+            chrome.tabs.highlight({ 
+                tabs: indicesToHighlight,
+                windowId: currentWindow.id
+            });
+        }
     }
 }
 
