@@ -5,6 +5,7 @@ function saveOptions() {
     const ignoreWWW = document.getElementById('ignoreWWW').checked;
     const ignoreQuery = document.getElementById('ignoreQuery').checked;
     const ignoreProtocol = document.getElementById('ignoreProtocol').checked;
+    const autoKill = document.getElementById('autoKill').checked;
     const hideList = document.getElementById('hideList').value;
 
     chrome.storage.sync.set({
@@ -13,6 +14,7 @@ function saveOptions() {
         ignoreWWW: ignoreWWW,
         ignoreQuery: ignoreQuery,
         ignoreProtocol: ignoreProtocol,
+        autoKill: autoKill,
         hideList: hideList
     });
 }
@@ -26,6 +28,7 @@ function restoreOptions() {
         ignoreWWW: false,
         ignoreQuery: false,
         ignoreProtocol: false,
+        autoKill: false,
         hideList: '',
         protectionPin: ''
     }, (items) => {
@@ -34,6 +37,7 @@ function restoreOptions() {
         document.getElementById('ignoreWWW').checked = items.ignoreWWW;
         document.getElementById('ignoreQuery').checked = items.ignoreQuery;
         document.getElementById('ignoreProtocol').checked = items.ignoreProtocol;
+        document.getElementById('autoKill').checked = items.autoKill;
         document.getElementById('hideList').value = items.hideList;
 
         // PIN Logic
@@ -115,6 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('ignoreWWW').addEventListener('change', saveOptions);
     document.getElementById('ignoreQuery').addEventListener('change', saveOptions);
     document.getElementById('ignoreProtocol').addEventListener('change', saveOptions);
+    document.getElementById('autoKill').addEventListener('change', saveOptions);
     document.getElementById('hideList').addEventListener('input', saveOptions);
     document.getElementById('btnSavePin').addEventListener('click', savePin);
     document.getElementById('btnForgotPin').addEventListener('click', resetPin);

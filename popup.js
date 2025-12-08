@@ -106,6 +106,26 @@ async function checkTabs() {
 
 document.getElementById('btnTarget').onclick = highlightClones;
 document.getElementById('btnKill').onclick = killClones;
+document.getElementById('btnSort').onclick = async () => {
+    const tabs = await chrome.tabs.query({ currentWindow: true });
+    
+    // Sort tabs by URL
+    tabs.sort((a, b) => {
+        if (a.url < b.url) return -1;
+        if (a.url > b.url) return 1;
+        return 0;
+    });
+
+    // Move tabs to their new positions
+    // We move them one by one to the end of the list, effectively reordering them
+    // A more efficient way is to move them to index 0 in reverse order, or just iterate
+    // But chrome.tabs.move with an array of IDs to index: 0 is the cleanest
+    const tabIds = tabs.map(t => t.id);
+    await chrome.tabs.move(tabIds, { index: 0 });
+    
+    document.getElementById("status").textContent = "Tabs sorted!";
+};
+
 document.getElementById('btnPin').onclick = async () => {
     const tabs = await chrome.tabs.query({});
     if (tabs.length > 0) {
