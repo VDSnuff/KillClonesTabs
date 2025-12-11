@@ -1,5 +1,47 @@
+:root {
+    --bg-color: #F2F2F2;
+    --text-color: #333;
+    --group-bg: #fff;
+    --group-shadow: rgba(0,0,0,0.1);
+    --label-color: #999;
+    --icon-stroke: #555;
+    --btn-hover-bg: #f0f0f0;
+    --btn-hover-border: #e0e0e0;
+    --danger-stroke: #d9534f;
+    --danger-bg: #fff5f5;
+    --danger-border: #ffcccc;
+    --primary-stroke: #0275d8;
+    --primary-bg: #f0f8ff;
+    --primary-border: #cce5ff;
+    --input-bg: #fff;
+    --input-border: #ccc;
+    --hr-color: #ccc;
+    --search-results-color: #444;
+}
+
+body.dark-mode {
+    --bg-color: #202124;
+    --text-color: #e8eaed;
+    --group-bg: #292a2d;
+    --group-shadow: rgba(0,0,0,0.3);
+    --label-color: #9aa0a6;
+    --icon-stroke: #e8eaed;
+    --btn-hover-bg: #3c4043;
+    --btn-hover-border: #5f6368;
+    --danger-stroke: #f28b82;
+    --danger-bg: #3c1e1e;
+    --danger-border: #5c2b2b;
+    --primary-stroke: #8ab4f8;
+    --primary-bg: #1e2a3c;
+    --primary-border: #2b3d5c;
+    --input-bg: #292a2d;
+    --input-border: #5f6368;
+    --hr-color: #5f6368;
+    --search-results-color: #9aa0a6;
+}
+
 body {
-    background: #F2F2F2;
+    background: var(--bg-color);
     height: auto;
     min-height: 350px;
     width: 280px;
@@ -7,16 +49,16 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     font-size: 14px;
     padding-bottom: 10px;
-    color: #333;
+    color: var(--text-color);
     transition: background-color 0.3s, color 0.3s;
 }
 
 .control-group {
-    background: #fff;
+    background: var(--group-bg);
     border-radius: 6px;
     margin: 8px 10px;
     padding: 6px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    box-shadow: 0 1px 3px var(--group-shadow);
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -26,7 +68,7 @@ body {
 
 .group-label {
     font-size: 10px;
-    color: #999;
+    color: var(--label-color);
     text-transform: uppercase;
     letter-spacing: 0.5px;
     width: 100%;
@@ -51,27 +93,27 @@ button {
 
 button:hover {
     opacity: 1;
-    background: #f0f0f0;
-    border-color: #e0e0e0;
+    background: var(--btn-hover-bg);
+    border-color: var(--btn-hover-border);
     transform: translateY(-1px);
 }
 
 /* Danger buttons (Kill, Hide) */
 button.btn-danger:hover svg {
-    stroke: #d9534f;
+    stroke: var(--danger-stroke);
 }
 button.btn-danger:hover {
-    background: #fff5f5;
-    border-color: #ffcccc;
+    background: var(--danger-bg);
+    border-color: var(--danger-border);
 }
 
 /* Primary buttons (Group, Sort) */
 button.btn-primary:hover svg {
-    stroke: #0275d8;
+    stroke: var(--primary-stroke);
 }
 button.btn-primary:hover {
-    background: #f0f8ff;
-    border-color: #cce5ff;
+    background: var(--primary-bg);
+    border-color: var(--primary-border);
 }
 
 svg {
@@ -79,7 +121,7 @@ svg {
     height: 22px;
     margin: 0;
     vertical-align: middle;
-    stroke: #555;
+    stroke: var(--icon-stroke);
     transition: stroke 0.3s;
 }
 
@@ -113,59 +155,63 @@ p {
     animation: scaleUp 0.5s ease-in-out;
 }
 
-/* Dark Mode Support */
+/* Search Box */
+#searchBox {
+    background: var(--input-bg);
+    color: var(--text-color);
+    border-color: var(--input-border);
+}
+
+#searchResults {
+    color: var(--search-results-color) !important;
+}
+
+hr {
+    border-top-color: var(--hr-color) !important;
+}
+
+/* Dark Mode Support via Media Query (Default) */
 @media (prefers-color-scheme: dark) {
-    body {
-        background: #202124;
-        color: #e8eaed;
-    }
-
-    .control-group {
-        background: #292a2d;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.3);
-    }
-
-    .group-label {
-        color: #9aa0a6;
-    }
-
-    svg {
-        stroke: #e8eaed;
-    }
-
-    button:hover {
-        background-color: #3c4043;
-        border-color: #5f6368;
-    }
-
-    /* Adjust Danger/Primary for dark mode */
-    button.btn-danger:hover svg {
-        stroke: #f28b82;
-    }
-    button.btn-danger:hover {
-        background-color: #3c1e1e;
-        border-color: #5c2b2b;
-    }
-
-    button.btn-primary:hover svg {
-        stroke: #8ab4f8;
-    }
-    button.btn-primary:hover {
-        background-color: #1e2a3c;
-        border-color: #2b3d5c;
-    }
-
-    #searchBox {
-        background: #292a2d;
-        color: #e8eaed;
-        border-color: #5f6368;
+    :root {
+        --bg-color: #202124;
+        --text-color: #e8eaed;
+        --group-bg: #292a2d;
+        --group-shadow: rgba(0,0,0,0.3);
+        --label-color: #9aa0a6;
+        --icon-stroke: #e8eaed;
+        --btn-hover-bg: #3c4043;
+        --btn-hover-border: #5f6368;
+        --danger-stroke: #f28b82;
+        --danger-bg: #3c1e1e;
+        --danger-border: #5c2b2b;
+        --primary-stroke: #8ab4f8;
+        --primary-bg: #1e2a3c;
+        --primary-border: #2b3d5c;
+        --input-bg: #292a2d;
+        --input-border: #5f6368;
+        --hr-color: #5f6368;
+        --search-results-color: #9aa0a6;
     }
     
-    #searchResults {
-        color: #9aa0a6 !important;
-    }
-    
-    hr {
-        border-top-color: #5f6368 !important;
+    /* If user explicitly toggles light mode, we override back to light variables */
+    body.light-mode {
+        --bg-color: #F2F2F2;
+        --text-color: #333;
+        --group-bg: #fff;
+        --group-shadow: rgba(0,0,0,0.1);
+        --label-color: #999;
+        --icon-stroke: #555;
+        --btn-hover-bg: #f0f0f0;
+        --btn-hover-border: #e0e0e0;
+        --danger-stroke: #d9534f;
+        --danger-bg: #fff5f5;
+        --danger-border: #ffcccc;
+        --primary-stroke: #0275d8;
+        --primary-bg: #f0f8ff;
+        --primary-border: #cce5ff;
+        --input-bg: #fff;
+        --input-border: #ccc;
+        --hr-color: #ccc;
+        --search-results-color: #444;
     }
 }

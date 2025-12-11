@@ -3,6 +3,43 @@ import { UndoManager } from './undo_manager.js';
 
 const undoManager = new UndoManager();
 
+// Theme Management
+async function initTheme() {
+    const { theme } = await chrome.storage.sync.get({ theme: 'system' });
+    applyTheme(theme);
+}
+
+function applyTheme(theme) {
+    document.body.classList.remove('dark-mode', 'light-mode');
+    if (theme === 'dark') {
+        document.body.classList.add('dark-mode');
+    } else if (theme === 'light') {
+        document.body.classList.add('light-mode');
+    }
+    // 'system' does nothing, letting media query handle it
+}
+
+document.getElementById('btnTheme').onclick = async () => {
+    const { theme } = await chrome.storage.sync.get({ theme: 'system' });
+    let newTheme = 'system';
+    
+    // Cycle: system -> dark -> light -> system
+    if (theme === 'system') newTheme = 'dark';
+    else if (theme === 'dark') newTheme = 'light';
+    else newTheme = 'system';
+    
+    await chrome.storage.sync.set({ theme: newTheme });
+    applyTheme(newTheme);
+    
+    // Optional: Show feedback
+    const status = document.getElementById("status");
+    status.textContent = `Theme: ${newTheme.charAt(0).toUpperCase() + newTheme.slice(1)}`;
+    setTimeout(() => { if (status.textContent.startsWith("Theme:")) status.textContent = ""; }, 1500);
+};
+
+// Initialize theme on load
+initTheme();
+
 async function highlightClones() {
     const statusElement = document.getElementById("status");
     
