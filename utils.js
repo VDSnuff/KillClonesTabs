@@ -114,8 +114,19 @@ export async function toggleTabGroups(windowId) {
         tabs.forEach(tab => {
             let domain = '';
             try { 
-                domain = new URL(tab.url).hostname; 
-                domain = domain.replace(/^www\./, '');
+                const hostname = new URL(tab.url).hostname; 
+                // Remove www.
+                let shortName = hostname.replace(/^www\./, '');
+                
+                // Remove TLD (last segment) to shorten the name
+                const parts = shortName.split('.');
+                if (parts.length > 1) {
+                    parts.pop();
+                    shortName = parts.join('.');
+                }
+                
+                // Capitalize first letter
+                domain = shortName.charAt(0).toUpperCase() + shortName.slice(1);
             } catch (e) { 
                 domain = 'Other'; 
             }
