@@ -9,19 +9,54 @@
     <p id="status">Manage your tabs</p>
     <input type="text" id="searchBox" placeholder="Search tabs..." style="width: 90%; padding: 6px; margin: 5px 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 12px;">
     <div id="searchResults" style="max-height: 160px; overflow: auto; margin: 0 10px 6px; font-size: 12px; color: #444;"></div>
-    <hr style="margin: 3px 10px; border: 0; border-top: 1px solid #ccc;">
-    <div>
+    
+    <!-- Duplicates Section -->
+    <div class="control-group">
+        <div class="group-label">Duplicates</div>
         <button title="Show duplicates" type="button" id="btnTarget">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="11" cy="11" r="8"></circle>
                 <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
         </button>
-        <button title="Kill duplicates" type="button" id="btnKill">
+        <button title="Kill duplicates" type="button" id="btnKill" class="btn-danger">
             <svg width="24" height="24" viewBox="2 2 20 20" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M14.7245 11.2754L16 12.4999L10.0129 17.8218C8.05054 19.5661 5.60528 20.6743 3 20.9999L3.79443 19.5435C4.6198 18.0303 5.03249 17.2737 5.50651 16.5582C5.92771 15.9224 6.38492 15.3113 6.87592 14.7278C7.42848 14.071 8.0378 13.4615 9.25644 12.2426L12 9.49822M11.5 8.99787L17.4497 3.04989C18.0698 2.42996 19.0281 2.3017 19.7894 2.73674C20.9027 3.37291 21.1064 4.89355 20.1997 5.80024L19.8415 6.15847C19.6228 6.3771 19.3263 6.49992 19.0171 6.49992H18L16 8.49992V8.67444C16 9.16362 16 9.40821 15.9447 9.63839C15.8957 9.84246 15.8149 10.0375 15.7053 10.2165C15.5816 10.4183 15.4086 10.5913 15.0627 10.9372L14.2501 11.7498L11.5 8.99787Z"></path>
             </svg>
         </button>
+    </div>
+
+    <!-- Organization Section -->
+    <div class="control-group">
+        <div class="group-label">Organize</div>
+        <button title="Sort Tabs by URL" type="button" id="btnSort" class="btn-primary">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="10" y1="6" x2="21" y2="6"></line>
+                <line x1="10" y1="12" x2="21" y2="12"></line>
+                <line x1="10" y1="18" x2="21" y2="18"></line>
+                <path d="M4 6h1v4"></path>
+                <path d="M4 10h2"></path>
+                <path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"></path>
+            </svg>
+        </button>
+        <button title="Group Tabs by Domain" type="button" id="btnGroup" class="btn-primary">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="7" height="7"></rect>
+                <rect x="14" y="3" width="7" height="7"></rect>
+                <rect x="14" y="14" width="7" height="7"></rect>
+                <rect x="3" y="14" width="7" height="7"></rect>
+            </svg>
+        </button>
+        <button title="Native Group Tabs by Domain" type="button" id="btnNativeGroup" class="btn-primary">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Manage Section -->
+    <div class="control-group">
+        <div class="group-label">Manage</div>
         <button title="Pin All Tabs" type="button" id="btnPin">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="12" y1="17" x2="12" y2="22"></line>
@@ -35,43 +70,6 @@
                 <line x1="17" y1="9" x2="23" y2="15"></line>
             </svg>
         </button>
-        <button title="Sort Tabs by URL" type="button" id="btnSort">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="10" y1="6" x2="21" y2="6"></line>
-                <line x1="10" y1="12" x2="21" y2="12"></line>
-                <line x1="10" y1="18" x2="21" y2="18"></line>
-                <path d="M4 6h1v4"></path>
-                <path d="M4 10h2"></path>
-                <path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"></path>
-            </svg>
-        </button>
-        <button title="Group Tabs by Domain" type="button" id="btnGroup">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="3" width="7" height="7"></rect>
-                <rect x="14" y="3" width="7" height="7"></rect>
-                <rect x="14" y="14" width="7" height="7"></rect>
-                <rect x="3" y="14" width="7" height="7"></rect>
-            </svg>
-        </button>
-        <button title="Native Group Tabs by Domain" type="button" id="btnNativeGroup">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
-            </svg>
-        </button>
-        <br>
-        <button title="Add current site to hide list" type="button" id="btnAddHide">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                <line x1="12" y1="8" x2="12" y2="16"></line>
-                <line x1="8" y1="12" x2="16" y2="12"></line>
-            </svg>
-        </button>
-        <button title="Hide Evidence" type="button" id="btnHideEvidence">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
-                <line x1="1" y1="1" x2="23" y2="23"></line>
-            </svg>
-        </button>
         <button title="Export Tabs to File" type="button" id="btnExport">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
@@ -79,7 +77,27 @@
                 <line x1="12" y1="15" x2="12" y2="3"></line>
             </svg>
         </button>
-        <hr style="margin: 3px 10px; border: 0; border-top: 1px solid #ccc;">
+    </div>
+
+    <!-- Privacy Section -->
+    <div class="control-group">
+        <div class="group-label">Privacy</div>
+        <button title="Add current site to hide list" type="button" id="btnAddHide">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <line x1="12" y1="8" x2="12" y2="16"></line>
+                <line x1="8" y1="12" x2="16" y2="12"></line>
+            </svg>
+        </button>
+        <button title="Hide Evidence" type="button" id="btnHideEvidence" class="btn-danger">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                <line x1="1" y1="1" x2="23" y2="23"></line>
+            </svg>
+        </button>
+    </div>
+
+    <div style="text-align: right; margin-right: 10px;">
         <button title="Settings" type="button" id="btnSettings">
             <svg width="20" height="20" viewBox="-3 -3 30 30" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="3"></circle>
