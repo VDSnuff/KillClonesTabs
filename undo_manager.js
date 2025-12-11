@@ -21,18 +21,36 @@ export class UndoManager {
     async restoreState() {
         if (!this.lastState) return;
 
-        // Sort by index to restore order correctly
-        this.lastState.sort((a, b) => a.index - b.index);
+        // 1. Filter out tabs that no longer exist
+        const currentTabs = await chrome.tabs.query({ currentWindow: true });
+        const currentTabIds = new Set(currentTabs.map(t => t.id));
+        const validState = this.lastState.filter(t => currentTabIds.has(t.id));
 
-        // 1. Restore Order
-        const tabIds = this.lastState.map(t => t.id);
+        if (validState.length === 0) {
+            this.lastState = null;
+            return;
+        }
+
+        // Sort by original index to ensure correct order
+        validState.sort((a, b) => a.index - b.index);
+
+        // 2. Restore Pinned State
+        for (const t of validState) {
+            const currentTab = currentTabs.find(ct => ct.id === t.id);
+            if (currentTab && currentTab.pinned !== t.pinned) {
+                await chrome.tabs.update(t.id, { pinned: t.pinned });
+            }
+        }
+
+        // 3. Restore Order
+        const tabIds = validState.map(t => t.id);
         await chrome.tabs.move(tabIds, { index: 0 });
 
-        // 2. Restore Groups
+        // 4. Restore Groups
         const groups = {};
         const ungrouped = [];
 
-        for (const t of this.lastState) {
+        for (const t of validState) {
             if (t.groupId === -1) {
                 ungrouped.push(t.id);
             } else {
