@@ -1,4 +1,7 @@
 import { findDuplicateTabs, normalizeUrl, toggleTabGroups } from './utils.js';
+import { UndoManager } from './undo_manager.js';
+
+const undoManager = new UndoManager();
 
 async function highlightClones() {
     const statusElement = document.getElementById("status");
@@ -104,9 +107,42 @@ async function checkTabs() {
     chrome.action.setIcon({ path: iconPath });
 }
 
+// Undo State Management
+async function captureState() {
+    await undoManager.captureState();
+    
+    const btnUndo = document.getElementById('btnUndo');
+    btnUndo.disabled = false;
+    btnUndo.style.opacity = "1";
+    btnUndo.style.cursor = "pointer";
+}
+
+async function restoreState() {
+    if (!undoManager.hasState()) return;
+
+    await undoManager.restoreState();
+
+    document.getElementById("status").textContent = "Undo successful!";
+    
+    // Disable Undo after use
+    const btnUndo = document.getElementById('btnUndo');
+    btnUndo.disabled = true;
+    btnUndo.style.opacity = "0.3";
+    btnUndo.style.cursor = "not-allowed";
+}
+    const btnUndo = document.getElementById('btnUndo');
+    btnUndo.disabled = true;
+    btnUndo.style.opacity = "0.3";
+    btnUndo.style.cursor = "not-allowed";
+}
+
 document.getElementById('btnTarget').onclick = highlightClones;
 document.getElementById('btnKill').onclick = killClones;
+
+document.getElementById('btnUndo').onclick = restoreState;
+
 document.getElementById('btnSort').onclick = async () => {
+    await captureState();
     const tabs = await chrome.tabs.query({ currentWindow: true });
     
     // Sort tabs by URL
@@ -124,6 +160,7 @@ document.getElementById('btnSort').onclick = async () => {
 };
 
 document.getElementById('btnGroup').onclick = async () => {
+    await captureState();
     const tabs = await chrome.tabs.query({ currentWindow: true });
     
     tabs.sort((a, b) => {
@@ -143,6 +180,7 @@ document.getElementById('btnGroup').onclick = async () => {
 };
 
 document.getElementById('btnNativeGroup').onclick = async () => {
+    await captureState();
     const message = await toggleTabGroups();
     document.getElementById("status").textContent = message;
 };
