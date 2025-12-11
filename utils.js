@@ -146,7 +146,7 @@ export async function toggleTabGroups(windowId) {
 
         // Create native groups
         for (const [domain, tabIds] of Object.entries(groups)) {
-            if (tabIds.length > 0) {
+            if (tabIds.length > 1) {
                 const groupId = await chrome.tabs.group({ tabIds });
                 await chrome.tabGroups.update(groupId, { title: domain });
             }
