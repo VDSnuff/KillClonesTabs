@@ -146,9 +146,13 @@ p {
     display: none;
 }
 
-#btnTheme.theme-system .icon-system,
-#btnTheme.theme-dark .icon-dark,
-#btnTheme.theme-light .icon-light {
+/* Show Sun icon when in Dark mode (to switch to Light) */
+#btnTheme.theme-dark .icon-light {
+    display: block;
+}
+
+/* Show Moon icon when in Light mode (to switch to Dark) */
+#btnTheme.theme-light .icon-dark {
     display: block;
 }
 

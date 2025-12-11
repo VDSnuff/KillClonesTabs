@@ -5,38 +5,41 @@ const undoManager = new UndoManager();
 
 // Theme Management
 async function initTheme() {
-    const { theme } = await chrome.storage.sync.get({ theme: 'system' });
+    // Default to system preference if not set, but resolve it to 'light' or 'dark' immediately
+    let { theme } = await chrome.storage.sync.get({ theme: null });
+    
+    if (!theme) {
+        // Detect system preference
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            theme = 'dark';
+        } else {
+            theme = 'light';
+        }
+    }
     applyTheme(theme);
 }
 
 function applyTheme(theme) {
     document.body.classList.remove('dark-mode', 'light-mode');
     const btnTheme = document.getElementById('btnTheme');
-    btnTheme.classList.remove('theme-system', 'theme-dark', 'theme-light');
+    btnTheme.classList.remove('theme-dark', 'theme-light');
     
     if (theme === 'dark') {
         document.body.classList.add('dark-mode');
         btnTheme.classList.add('theme-dark');
         btnTheme.title = "Theme: Dark (Click to switch to Light)";
-    } else if (theme === 'light') {
+    } else {
+        // Default to light
         document.body.classList.add('light-mode');
         btnTheme.classList.add('theme-light');
-        btnTheme.title = "Theme: Light (Click to switch to System)";
-    } else {
-        // 'system'
-        btnTheme.classList.add('theme-system');
-        btnTheme.title = "Theme: System (Click to switch to Dark)";
+        btnTheme.title = "Theme: Light (Click to switch to Dark)";
     }
 }
 
 document.getElementById('btnTheme').onclick = async () => {
-    const { theme } = await chrome.storage.sync.get({ theme: 'system' });
-    let newTheme = 'system';
-    
-    // Cycle: system -> dark -> light -> system
-    if (theme === 'system') newTheme = 'dark';
-    else if (theme === 'dark') newTheme = 'light';
-    else newTheme = 'system';
+    // Get current applied theme from body class to decide next state
+    const isDark = document.body.classList.contains('dark-mode');
+    const newTheme = isDark ? 'light' : 'dark';
     
     await chrome.storage.sync.set({ theme: newTheme });
     applyTheme(newTheme);
