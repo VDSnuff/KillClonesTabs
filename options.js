@@ -139,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('keepStrategy').addEventListener('change', saveOptions);
     document.getElementById('groupNaming').addEventListener('change', saveOptions);
     document.getElementById('hideList').addEventListener('input', saveOptions);
-    document.getElementById('btnAuth').addEventListener('click', checkPin);
+    // document.getElementById('btnAuth').addEventListener('click', checkPin); // Handled in restoreOptions
     document.getElementById('btnSavePin').addEventListener('click', savePin);
     document.getElementById('btnForgotPin').addEventListener('click', resetPin);
 });
