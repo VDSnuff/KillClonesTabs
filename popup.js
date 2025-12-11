@@ -371,20 +371,6 @@ document.getElementById('searchBox').addEventListener('keyup', async (e) => {
         document.getElementById("status").textContent = `No tabs match "${query}"`;
         return;
     }
-    
-    // Highlight matching tabs
-    const tabIndices = matchingTabs.map(tab => tab.index);
-    const currentWindow = await chrome.windows.getCurrent();
-    
-    chrome.tabs.highlight({
-        tabs: tabIndices,
-        windowId: currentWindow.id
-    });
-    
+    // Do not change active tab or highlight to avoid closing popup
     document.getElementById("status").textContent = `Found ${matchingTabs.length} match${matchingTabs.length === 1 ? '' : 'es'}`;
-    
-    // Focus first matching tab
-    if (matchingTabs.length > 0) {
-        await chrome.tabs.update(matchingTabs[0].id, { active: true });
-    }
 });
