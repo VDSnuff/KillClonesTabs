@@ -1,4 +1,4 @@
-import { findDuplicateTabs, normalizeUrl } from './utils.js';
+import { findDuplicateTabs, normalizeUrl, toggleTabGroups } from './utils.js';
 
 async function highlightClones() {
     const statusElement = document.getElementById("status");
@@ -143,32 +143,8 @@ document.getElementById('btnGroup').onclick = async () => {
 };
 
 document.getElementById('btnNativeGroup').onclick = async () => {
-    const tabs = await chrome.tabs.query({ currentWindow: true });
-    
-    // Group tabs by domain
-    const groups = {};
-    tabs.forEach(tab => {
-        let domain = '';
-        try { 
-            domain = new URL(tab.url).hostname; 
-            // Remove www. for cleaner group names
-            domain = domain.replace(/^www\./, '');
-        } catch (e) { 
-            domain = 'Other'; 
-        }
-        if (!groups[domain]) groups[domain] = [];
-        groups[domain].push(tab.id);
-    });
-
-    // Create native groups
-    for (const [domain, tabIds] of Object.entries(groups)) {
-        if (tabIds.length > 0) {
-            const groupId = await chrome.tabs.group({ tabIds });
-            await chrome.tabGroups.update(groupId, { title: domain });
-        }
-    }
-    
-    document.getElementById("status").textContent = "Tabs grouped natively!";
+    const message = await toggleTabGroups();
+    document.getElementById("status").textContent = message;
 };
 
 document.getElementById('btnPin').onclick = async () => {

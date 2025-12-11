@@ -1,4 +1,4 @@
-import { findDuplicateTabs } from './utils.js';
+import { findDuplicateTabs, toggleTabGroups } from './utils.js';
 
 async function checkTabs() {
     const settings = await chrome.storage.sync.get({ autoKill: false });
@@ -16,6 +16,13 @@ async function checkTabs() {
         chrome.action.setIcon({ path: iconPath });
     }
 }
+
+chrome.commands.onCommand.addListener(async (command) => {
+    if (command === 'toggle-grouping') {
+        const window = await chrome.windows.getLastFocused();
+        await toggleTabGroups(window.id);
+    }
+});
 
 chrome.tabs.onUpdated.addListener(checkTabs);
 chrome.tabs.onRemoved.addListener(checkTabs);

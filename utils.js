@@ -89,3 +89,47 @@ export async function findDuplicateTabs() {
     }
     return duplicates;
 }
+
+export async function toggleTabGroups(windowId) {
+    // If windowId is not provided, get the current window
+    if (!windowId) {
+        const window = await chrome.windows.getCurrent();
+        windowId = window.id;
+    }
+
+    const tabs = await chrome.tabs.query({ windowId });
+    
+    // Check if any tab is in a group
+    // chrome.tabGroups.TAB_GROUP_ID_NONE is -1
+    const groupedTabs = tabs.filter(t => t.groupId !== -1);
+    
+    if (groupedTabs.length > 0) {
+        // Ungroup all tabs
+        const tabIds = groupedTabs.map(t => t.id);
+        await chrome.tabs.ungroup(tabIds);
+        return "Tabs ungrouped!";
+    } else {
+        // Group tabs by domain
+        const groups = {};
+        tabs.forEach(tab => {
+            let domain = '';
+            try { 
+                domain = new URL(tab.url).hostname; 
+                domain = domain.replace(/^www\./, '');
+            } catch (e) { 
+                domain = 'Other'; 
+            }
+            if (!groups[domain]) groups[domain] = [];
+            groups[domain].push(tab.id);
+        });
+
+        // Create native groups
+        for (const [domain, tabIds] of Object.entries(groups)) {
+            if (tabIds.length > 0) {
+                const groupId = await chrome.tabs.group({ tabIds });
+                await chrome.tabGroups.update(groupId, { title: domain });
+            }
+        }
+        return "Tabs grouped natively!";
+    }
+}
