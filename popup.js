@@ -259,6 +259,12 @@ document.getElementById('btnPin').onclick = async () => {
     if (tabs.length > 0) {
         // If any tab is not pinned, pin all. Otherwise, unpin all.
         const willBePinned = tabs.some(tab => !tab.pinned);
+        
+        // If unpinning, process in reverse order to maintain tab order
+        if (!willBePinned) {
+            tabs.reverse();
+        }
+
         for (const tab of tabs) {
             await chrome.tabs.update(tab.id, { pinned: willBePinned });
         }
