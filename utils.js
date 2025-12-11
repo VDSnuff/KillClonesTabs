@@ -35,7 +35,6 @@ export function normalizeUrl(url, settings) {
 
 // A more efficient way to find duplicate tabs.
 // Returns an array of duplicate tabs to be closed.
-// If keepCurrentTab is true, keep the active tab instead of the first occurrence.
 export async function findDuplicateTabs() {
     const tabs = await chrome.tabs.query({ windowType: 'normal' });
     
@@ -46,12 +45,19 @@ export async function findDuplicateTabs() {
         ignoreWWW: false,
         ignoreQuery: false,
         ignoreProtocol: false,
-        keepCurrentTab: false
+        keepCurrentTab: false, // Legacy
+        keepStrategy: 'oldest'
     });
 
-    // Get current active tab if keepCurrentTab is enabled
+    // Migration logic for legacy setting
+    let strategy = settings.keepStrategy;
+    if (settings.keepCurrentTab && strategy === 'oldest') {
+        strategy = 'active';
+    }
+
+    // Get current active tab if strategy is 'active'
     let activeTab = null;
-    if (settings.keepCurrentTab) {
+    if (strategy === 'active') {
         const [current] = await chrome.tabs.query({ active: true, currentWindow: true });
         activeTab = current;
     }
@@ -65,8 +71,7 @@ export async function findDuplicateTabs() {
             if (urlMap.has(normalized)) {
                 const existing = urlMap.get(normalized);
                 
-                // If keepCurrentTab is enabled and one of the tabs is active
-                if (settings.keepCurrentTab && activeTab) {
+                if (strategy === 'active' && activeTab) {
                     if (tab.id === activeTab.id) {
                         // Current tab is a duplicate - keep it, mark existing as duplicate
                         duplicates.push(existing);
@@ -75,11 +80,16 @@ export async function findDuplicateTabs() {
                         // Existing is active - keep it, mark current as duplicate
                         duplicates.push(tab);
                     } else {
-                        // Neither is active - keep first (existing), mark current as duplicate
+                        // Neither is active - fallback to oldest (keep existing)
                         duplicates.push(tab);
                     }
+                } else if (strategy === 'newest') {
+                    // Keep newest (current 'tab' is newer than 'existing' because tabs are iterated in order)
+                    // So we keep 'tab' and mark 'existing' as duplicate
+                    duplicates.push(existing);
+                    urlMap.set(normalized, tab);
                 } else {
-                    // Default behavior: keep first, mark current as duplicate
+                    // Default 'oldest': keep first (existing), mark current as duplicate
                     duplicates.push(tab);
                 }
             } else {

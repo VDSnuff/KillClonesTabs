@@ -47,11 +47,15 @@
     <hr style="border: 0; border-top: 1px solid #ccc; margin: 15px 0;">
 
     <h1>Duplicate Handling</h1>
-    <label>
-        <input type="checkbox" id="keepCurrentTab">
-        Keep current tab instead of first
+    <label style="cursor: default;">
+        Keep Strategy:
+        <select id="keepStrategy" style="margin-left: 10px; padding: 2px;">
+            <option value="oldest">Keep Oldest (First Created)</option>
+            <option value="newest">Keep Newest (Last Created)</option>
+            <option value="active">Keep Active (Current Tab)</option>
+        </select>
     </label>
-    <span class="note">When killing duplicates, keep the active tab instead of the first occurrence.</span>
+    <span class="note">Decide which tab stays open when duplicates are found.</span>
 
     <hr style="border: 0; border-top: 1px solid #ccc; margin: 15px 0;">
 

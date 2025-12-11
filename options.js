@@ -6,7 +6,7 @@ function saveOptions() {
     const ignoreQuery = document.getElementById('ignoreQuery').checked;
     const ignoreProtocol = document.getElementById('ignoreProtocol').checked;
     const autoKill = document.getElementById('autoKill').checked;
-    const keepCurrentTab = document.getElementById('keepCurrentTab').checked;
+    const keepStrategy = document.getElementById('keepStrategy').value;
     const hideList = document.getElementById('hideList').value;
 
     chrome.storage.sync.set({
@@ -16,7 +16,7 @@ function saveOptions() {
         ignoreQuery: ignoreQuery,
         ignoreProtocol: ignoreProtocol,
         autoKill: autoKill,
-        keepCurrentTab: keepCurrentTab,
+        keepStrategy: keepStrategy,
         hideList: hideList
     });
 }
@@ -31,7 +31,8 @@ function restoreOptions() {
         ignoreQuery: false,
         ignoreProtocol: false,
         autoKill: false,
-        keepCurrentTab: false,
+        keepCurrentTab: false, // Legacy support
+        keepStrategy: 'oldest',
         hideList: '',
         protectionPin: ''
     }, (items) => {
@@ -41,7 +42,14 @@ function restoreOptions() {
         document.getElementById('ignoreQuery').checked = items.ignoreQuery;
         document.getElementById('ignoreProtocol').checked = items.ignoreProtocol;
         document.getElementById('autoKill').checked = items.autoKill;
-        document.getElementById('keepCurrentTab').checked = items.keepCurrentTab;
+        
+        // Migration logic: if keepCurrentTab was true, default to 'active'
+        let strategy = items.keepStrategy;
+        if (items.keepCurrentTab && strategy === 'oldest') {
+            strategy = 'active';
+        }
+        document.getElementById('keepStrategy').value = strategy;
+
         document.getElementById('hideList').value = items.hideList;
 
         // PIN Logic
@@ -124,8 +132,9 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('ignoreQuery').addEventListener('change', saveOptions);
     document.getElementById('ignoreProtocol').addEventListener('change', saveOptions);
     document.getElementById('autoKill').addEventListener('change', saveOptions);
-    document.getElementById('keepCurrentTab').addEventListener('change', saveOptions);
+    document.getElementById('keepStrategy').addEventListener('change', saveOptions);
     document.getElementById('hideList').addEventListener('input', saveOptions);
+    document.getElementById('btnAuth').addEventListener('click', checkPin);
     document.getElementById('btnSavePin').addEventListener('click', savePin);
     document.getElementById('btnForgotPin').addEventListener('click', resetPin);
 });
