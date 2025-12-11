@@ -255,7 +255,8 @@ document.getElementById('btnExport').onclick = async () => {
 };
 
 document.getElementById('btnPin').onclick = async () => {
-    const tabs = await chrome.tabs.query({});
+    await captureState();
+    const tabs = await chrome.tabs.query({ currentWindow: true });
     if (tabs.length > 0) {
         // If any tab is not pinned, pin all. Otherwise, unpin all.
         const willBePinned = tabs.some(tab => !tab.pinned);
@@ -268,7 +269,8 @@ document.getElementById('btnPin').onclick = async () => {
 };
 
 document.getElementById('btnMuted').onclick = async () => {
-    const tabs = await chrome.tabs.query({});
+    await captureState();
+    const tabs = await chrome.tabs.query({ currentWindow: true });
     if (tabs.length > 0) {
         // If any tab is not muted, mute all. Otherwise, unmute all.
         const willBeMuted = tabs.some(tab => !tab.mutedInfo.muted);
@@ -281,7 +283,7 @@ document.getElementById('btnMuted').onclick = async () => {
 };
 
 async function updateMuteButtonState() {
-    const tabs = await chrome.tabs.query({});
+    const tabs = await chrome.tabs.query({ currentWindow: true });
     const isAnyUnmuted = tabs.some(tab => !tab.mutedInfo.muted);
     const btnMuted = document.getElementById('btnMuted');
     const svg = btnMuted.querySelector('svg');
@@ -298,7 +300,7 @@ async function updateMuteButtonState() {
 }
 
 async function updatePinButtonState() {
-    const tabs = await chrome.tabs.query({});
+    const tabs = await chrome.tabs.query({ currentWindow: true });
     const isAnyUnpinned = tabs.some(tab => !tab.pinned);
     const btnPin = document.getElementById('btnPin');
     const svg = btnPin.querySelector('svg');

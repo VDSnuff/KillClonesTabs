@@ -5,12 +5,13 @@ export class UndoManager {
 
     async captureState() {
         const tabs = await chrome.tabs.query({ currentWindow: true });
-        // Capture tab properties: id, index, groupId, pinned
+        // Capture tab properties: id, index, groupId, pinned, muted
         this.lastState = tabs.map(t => ({
             id: t.id,
             index: t.index,
             groupId: t.groupId,
-            pinned: t.pinned
+            pinned: t.pinned,
+            muted: t.mutedInfo ? t.mutedInfo.muted : false
         }));
     }
 
@@ -34,11 +35,16 @@ export class UndoManager {
         // Sort by original index to ensure correct order
         validState.sort((a, b) => a.index - b.index);
 
-        // 2. Restore Pinned State
+        // 2. Restore Pinned and Muted State
         for (const t of validState) {
             const currentTab = currentTabs.find(ct => ct.id === t.id);
-            if (currentTab && currentTab.pinned !== t.pinned) {
-                await chrome.tabs.update(t.id, { pinned: t.pinned });
+            if (currentTab) {
+                if (currentTab.pinned !== t.pinned) {
+                    await chrome.tabs.update(t.id, { pinned: t.pinned });
+                }
+                if (currentTab.mutedInfo && currentTab.mutedInfo.muted !== t.muted) {
+                    await chrome.tabs.update(t.id, { muted: t.muted });
+                }
             }
         }
 
