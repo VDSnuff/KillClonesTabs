@@ -379,11 +379,46 @@ document.getElementById('searchBox').addEventListener('keyup', async (e) => {
         let host = '';
         try { host = new URL(t.url).hostname; } catch { host = t.url || ''; }
         const safe = s => String(s).replace(/[<>&]/g, ch => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[ch]));
-        return `<div style="padding:6px;border-bottom:1px solid #eee;">
+        return `<div class="result-item" data-tab-id="${t.id}" data-url="${safe(t.url || '')}" style="padding:6px;border-bottom:1px solid #eee;text-align:left;">
             <div style="font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${safe(t.title || '')}</div>
             <div style="color:#777;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${safe(host)}</div>
+            <div style="margin-top:4px;display:flex;gap:6px;">
+                <button class="move-here" style="padding:2px 6px;font-size:11px;">Move next to current</button>
+                <button class="copy-url" style="padding:2px 6px;font-size:11px;">Copy URL</button>
+            </div>
         </div>`;
     }).join('');
     resultsEl.innerHTML = items;
     document.getElementById("status").textContent = `Found ${matchingTabs.length} match${matchingTabs.length === 1 ? '' : 'es'}`;
+});
+
+// Delegate clicks on search results for non-disruptive actions
+document.getElementById('searchResults').addEventListener('click', async (e) => {
+    const target = e.target;
+    const item = target.closest('.result-item');
+    if (!item) return;
+    const tabId = Number(item.getAttribute('data-tab-id'));
+    const url = item.getAttribute('data-url');
+
+    if (target.classList.contains('copy-url')) {
+        try {
+            await navigator.clipboard.writeText(url);
+            document.getElementById('status').textContent = 'URL copied!';
+        } catch {
+            document.getElementById('status').textContent = 'Copy failed';
+        }
+        return;
+    }
+
+    if (target.classList.contains('move-here')) {
+        const [current] = await chrome.tabs.query({ active: true, currentWindow: true });
+        if (!current) return;
+        try {
+            await chrome.tabs.move(tabId, { index: current.index + 1 });
+            document.getElementById('status').textContent = 'Moved next to current';
+        } catch {
+            document.getElementById('status').textContent = 'Move failed';
+        }
+        return;
+    }
 });
