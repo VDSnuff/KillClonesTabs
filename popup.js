@@ -11,12 +11,22 @@ async function initTheme() {
 
 function applyTheme(theme) {
     document.body.classList.remove('dark-mode', 'light-mode');
+    const btnTheme = document.getElementById('btnTheme');
+    btnTheme.classList.remove('theme-system', 'theme-dark', 'theme-light');
+    
     if (theme === 'dark') {
         document.body.classList.add('dark-mode');
+        btnTheme.classList.add('theme-dark');
+        btnTheme.title = "Theme: Dark (Click to switch to Light)";
     } else if (theme === 'light') {
         document.body.classList.add('light-mode');
+        btnTheme.classList.add('theme-light');
+        btnTheme.title = "Theme: Light (Click to switch to System)";
+    } else {
+        // 'system'
+        btnTheme.classList.add('theme-system');
+        btnTheme.title = "Theme: System (Click to switch to Dark)";
     }
-    // 'system' does nothing, letting media query handle it
 }
 
 document.getElementById('btnTheme').onclick = async () => {

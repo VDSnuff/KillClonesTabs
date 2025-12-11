@@ -134,6 +134,22 @@ p {
 
 #status {
     margin-bottom: 5px;
+    height: 20px;
+    line-height: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Theme Button Icons */
+#btnTheme svg {
+    display: none;
+}
+
+#btnTheme.theme-system .icon-system,
+#btnTheme.theme-dark .icon-dark,
+#btnTheme.theme-light .icon-light {
+    display: block;
 }
 
 @keyframes blinkRed {
