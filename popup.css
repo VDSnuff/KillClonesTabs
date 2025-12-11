@@ -7,6 +7,8 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     font-size: 14px;
     padding-bottom: 10px;
+    color: #333;
+    transition: background-color 0.3s, color 0.3s;
 }
 
 .control-group {
@@ -19,6 +21,7 @@ body {
     justify-content: center;
     flex-wrap: wrap;
     gap: 4px;
+    transition: background-color 0.3s, box-shadow 0.3s;
 }
 
 .group-label {
@@ -36,7 +39,7 @@ button {
     border-radius: 4px;
     border: 1px solid transparent;
     background: transparent;
-    opacity: 0.7;
+    opacity: 0.8;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -76,6 +79,8 @@ svg {
     height: 22px;
     margin: 0;
     vertical-align: middle;
+    stroke: #555;
+    transition: stroke 0.3s;
 }
 
 p {
@@ -90,8 +95,8 @@ p {
 }
 
 @keyframes blinkRed {
-    0%, 100% { stroke: #555; }
-    50% { stroke: red; }
+    0%, 100% { stroke: currentColor; }
+    50% { stroke: #d9534f; }
 }
 
 .blink-red {
@@ -106,4 +111,61 @@ p {
 
 .scale-up {
     animation: scaleUp 0.5s ease-in-out;
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    body {
+        background: #202124;
+        color: #e8eaed;
+    }
+
+    .control-group {
+        background: #292a2d;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+
+    .group-label {
+        color: #9aa0a6;
+    }
+
+    svg {
+        stroke: #e8eaed;
+    }
+
+    button:hover {
+        background-color: #3c4043;
+        border-color: #5f6368;
+    }
+
+    /* Adjust Danger/Primary for dark mode */
+    button.btn-danger:hover svg {
+        stroke: #f28b82;
+    }
+    button.btn-danger:hover {
+        background-color: #3c1e1e;
+        border-color: #5c2b2b;
+    }
+
+    button.btn-primary:hover svg {
+        stroke: #8ab4f8;
+    }
+    button.btn-primary:hover {
+        background-color: #1e2a3c;
+        border-color: #2b3d5c;
+    }
+
+    #searchBox {
+        background: #292a2d;
+        color: #e8eaed;
+        border-color: #5f6368;
+    }
+    
+    #searchResults {
+        color: #9aa0a6 !important;
+    }
+    
+    hr {
+        border-top-color: #5f6368 !important;
+    }
 }
