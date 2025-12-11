@@ -34,7 +34,8 @@ export function normalizeUrl(url, settings) {
 }
 
 // A more efficient way to find duplicate tabs.
-// Returns an array of duplicate tabs. The first tab with a given URL is not included.
+// Returns an array of duplicate tabs to be closed.
+// If keepCurrentTab is true, keep the active tab instead of the first occurrence.
 export async function findDuplicateTabs() {
     const tabs = await chrome.tabs.query({ windowType: 'normal' });
     
@@ -44,8 +45,16 @@ export async function findDuplicateTabs() {
         ignoreAnchors: false,
         ignoreWWW: false,
         ignoreQuery: false,
-        ignoreProtocol: false
+        ignoreProtocol: false,
+        keepCurrentTab: false
     });
+
+    // Get current active tab if keepCurrentTab is enabled
+    let activeTab = null;
+    if (settings.keepCurrentTab) {
+        const [current] = await chrome.tabs.query({ active: true, currentWindow: true });
+        activeTab = current;
+    }
 
     const urlMap = new Map();
     const duplicates = [];
@@ -54,8 +63,25 @@ export async function findDuplicateTabs() {
         if (tab.url) {
             const normalized = normalizeUrl(tab.url, settings);
             if (urlMap.has(normalized)) {
-                // The tab in the map is the "original", this one is a duplicate
-                duplicates.push(tab);
+                const existing = urlMap.get(normalized);
+                
+                // If keepCurrentTab is enabled and one of the tabs is active
+                if (settings.keepCurrentTab && activeTab) {
+                    if (tab.id === activeTab.id) {
+                        // Current tab is a duplicate - keep it, mark existing as duplicate
+                        duplicates.push(existing);
+                        urlMap.set(normalized, tab);
+                    } else if (existing.id === activeTab.id) {
+                        // Existing is active - keep it, mark current as duplicate
+                        duplicates.push(tab);
+                    } else {
+                        // Neither is active - keep first (existing), mark current as duplicate
+                        duplicates.push(tab);
+                    }
+                } else {
+                    // Default behavior: keep first, mark current as duplicate
+                    duplicates.push(tab);
+                }
             } else {
                 urlMap.set(normalized, tab);
             }
