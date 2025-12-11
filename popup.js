@@ -147,6 +147,30 @@ document.getElementById('btnNativeGroup').onclick = async () => {
     document.getElementById("status").textContent = message;
 };
 
+document.getElementById('btnExport').onclick = async () => {
+    const tabs = await chrome.tabs.query({ currentWindow: true });
+    
+    // Format as Markdown list
+    const content = tabs.map(tab => `- [${tab.title}](${tab.url})`).join('\n');
+    
+    // Create blob and download link
+    const blob = new Blob([content], { type: 'text/markdown' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    
+    // Generate filename with timestamp
+    const date = new Date().toISOString().slice(0, 10);
+    a.download = `tabs-export-${date}.md`;
+    
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    document.getElementById("status").textContent = "Tabs exported!";
+};
+
 document.getElementById('btnPin').onclick = async () => {
     const tabs = await chrome.tabs.query({});
     if (tabs.length > 0) {
