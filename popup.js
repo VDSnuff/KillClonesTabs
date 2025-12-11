@@ -355,22 +355,35 @@ document.getElementById('btnSettings').onclick = () => {
 // Search/Filter tabs functionality
 document.getElementById('searchBox').addEventListener('keyup', async (e) => {
     const query = e.target.value.toLowerCase().trim();
+    const resultsEl = document.getElementById('searchResults');
     
     if (query === '') {
+        resultsEl.innerHTML = '';
         document.getElementById("status").textContent = "Manage your tabs";
         return;
     }
     
     const tabs = await chrome.tabs.query({ currentWindow: true });
     const matchingTabs = tabs.filter(tab => 
-        tab.title.toLowerCase().includes(query) || 
-        tab.url.toLowerCase().includes(query)
+        (tab.title || '').toLowerCase().includes(query) || 
+        (tab.url || '').toLowerCase().includes(query)
     );
     
     if (matchingTabs.length === 0) {
+        resultsEl.innerHTML = '<div style="padding:6px;color:#888;">No tabs match</div>';
         document.getElementById("status").textContent = `No tabs match "${query}"`;
         return;
     }
-    // Do not change active tab or highlight to avoid closing popup
+    // Render a lightweight list of matches without changing focus
+    const items = matchingTabs.map(t => {
+        let host = '';
+        try { host = new URL(t.url).hostname; } catch { host = t.url || ''; }
+        const safe = s => String(s).replace(/[<>&]/g, ch => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[ch]));
+        return `<div style="padding:6px;border-bottom:1px solid #eee;">
+            <div style="font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${safe(t.title || '')}</div>
+            <div style="color:#777;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${safe(host)}</div>
+        </div>`;
+    }).join('');
+    resultsEl.innerHTML = items;
     document.getElementById("status").textContent = `Found ${matchingTabs.length} match${matchingTabs.length === 1 ? '' : 'es'}`;
 });
