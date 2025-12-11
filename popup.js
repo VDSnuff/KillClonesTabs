@@ -117,9 +117,6 @@ document.getElementById('btnSort').onclick = async () => {
     });
 
     // Move tabs to their new positions
-    // We move them one by one to the end of the list, effectively reordering them
-    // A more efficient way is to move them to index 0 in reverse order, or just iterate
-    // But chrome.tabs.move with an array of IDs to index: 0 is the cleanest
     const tabIds = tabs.map(t => t.id);
     await chrome.tabs.move(tabIds, { index: 0 });
     
@@ -133,9 +130,6 @@ document.getElementById('btnGroup').onclick = async () => {
         let domainA = '', domainB = '';
         try { domainA = new URL(a.url).hostname; } catch (e) { domainA = a.url; }
         try { domainB = new URL(b.url).hostname; } catch (e) { domainB = b.url; }
-        
-        // Reverse domain parts for better grouping (e.g., mail.google.com vs maps.google.com)
-        // Actually, simple hostname sort is usually what people expect for "group by domain"
         
         if (domainA < domainB) return -1;
         if (domainA > domainB) return 1;
@@ -357,3 +351,40 @@ document.getElementById('btnSettings').onclick = () => {
         window.open(chrome.runtime.getURL('options.html'));
     }
 };
+
+// Search/Filter tabs functionality
+document.getElementById('searchBox').addEventListener('keyup', async (e) => {
+    const query = e.target.value.toLowerCase().trim();
+    
+    if (query === '') {
+        document.getElementById("status").textContent = "Manage your tabs";
+        return;
+    }
+    
+    const tabs = await chrome.tabs.query({ currentWindow: true });
+    const matchingTabs = tabs.filter(tab => 
+        tab.title.toLowerCase().includes(query) || 
+        tab.url.toLowerCase().includes(query)
+    );
+    
+    if (matchingTabs.length === 0) {
+        document.getElementById("status").textContent = `No tabs match "${query}"`;
+        return;
+    }
+    
+    // Highlight matching tabs
+    const tabIndices = matchingTabs.map(tab => tab.index);
+    const currentWindow = await chrome.windows.getCurrent();
+    
+    chrome.tabs.highlight({
+        tabs: tabIndices,
+        windowId: currentWindow.id
+    });
+    
+    document.getElementById("status").textContent = `Found ${matchingTabs.length} match${matchingTabs.length === 1 ? '' : 'es'}`;
+    
+    // Focus first matching tab
+    if (matchingTabs.length > 0) {
+        await chrome.tabs.update(matchingTabs[0].id, { active: true });
+    }
+});
