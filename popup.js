@@ -130,11 +130,6 @@ async function restoreState() {
     btnUndo.style.opacity = "0.3";
     btnUndo.style.cursor = "not-allowed";
 }
-    const btnUndo = document.getElementById('btnUndo');
-    btnUndo.disabled = true;
-    btnUndo.style.opacity = "0.3";
-    btnUndo.style.cursor = "not-allowed";
-}
 
 document.getElementById('btnTarget').onclick = highlightClones;
 document.getElementById('btnKill').onclick = killClones;
