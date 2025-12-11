@@ -7,6 +7,7 @@ function saveOptions() {
     const ignoreProtocol = document.getElementById('ignoreProtocol').checked;
     const autoKill = document.getElementById('autoKill').checked;
     const keepStrategy = document.getElementById('keepStrategy').value;
+    const groupNaming = document.getElementById('groupNaming').value;
     const hideList = document.getElementById('hideList').value;
 
     chrome.storage.sync.set({
@@ -17,6 +18,7 @@ function saveOptions() {
         ignoreProtocol: ignoreProtocol,
         autoKill: autoKill,
         keepStrategy: keepStrategy,
+        groupNaming: groupNaming,
         hideList: hideList
     });
 }
@@ -33,6 +35,7 @@ function restoreOptions() {
         autoKill: false,
         keepCurrentTab: false, // Legacy support
         keepStrategy: 'oldest',
+        groupNaming: 'domain',
         hideList: '',
         protectionPin: ''
     }, (items) => {
@@ -49,6 +52,7 @@ function restoreOptions() {
             strategy = 'active';
         }
         document.getElementById('keepStrategy').value = strategy;
+        document.getElementById('groupNaming').value = items.groupNaming;
 
         document.getElementById('hideList').value = items.hideList;
 
@@ -133,6 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('ignoreProtocol').addEventListener('change', saveOptions);
     document.getElementById('autoKill').addEventListener('change', saveOptions);
     document.getElementById('keepStrategy').addEventListener('change', saveOptions);
+    document.getElementById('groupNaming').addEventListener('change', saveOptions);
     document.getElementById('hideList').addEventListener('input', saveOptions);
     document.getElementById('btnAuth').addEventListener('click', checkPin);
     document.getElementById('btnSavePin').addEventListener('click', savePin);

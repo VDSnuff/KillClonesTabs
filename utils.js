@@ -109,6 +109,9 @@ export async function toggleTabGroups(windowId) {
 
     const tabs = await chrome.tabs.query({ windowId });
     
+    // Fetch settings
+    const settings = await chrome.storage.sync.get({ groupNaming: 'domain' });
+
     // Check if any tab is in a group
     // chrome.tabGroups.TAB_GROUP_ID_NONE is -1
     const groupedTabs = tabs.filter(t => t.groupId !== -1);
@@ -144,11 +147,45 @@ export async function toggleTabGroups(windowId) {
             groups[domain].push(tab.id);
         });
 
+        // Calculate abbreviations if needed
+        const domainToName = {};
+        if (settings.groupNaming === 'initials') {
+            const domains = Object.keys(groups);
+            const abbrs = domains.map(d => ({ domain: d, abbr: d.charAt(0), len: 1 }));
+            
+            let hasCollisions = true;
+            while (hasCollisions) {
+                hasCollisions = false;
+                // Find collisions
+                const counts = {};
+                abbrs.forEach(item => {
+                    counts[item.abbr] = (counts[item.abbr] || 0) + 1;
+                });
+                
+                // Resolve collisions
+                abbrs.forEach(item => {
+                    if (counts[item.abbr] > 1 && item.len < item.domain.length) {
+                        item.len++;
+                        item.abbr = item.domain.substring(0, item.len);
+                        hasCollisions = true;
+                    }
+                });
+            }
+            
+            abbrs.forEach(item => {
+                // Capitalize abbreviation
+                domainToName[item.domain] = item.abbr.charAt(0).toUpperCase() + item.abbr.slice(1);
+            });
+        } else {
+            Object.keys(groups).forEach(d => domainToName[d] = d);
+        }
+
         // Create native groups
         for (const [domain, tabIds] of Object.entries(groups)) {
             if (tabIds.length > 1) {
                 const groupId = await chrome.tabs.group({ tabIds });
-                await chrome.tabGroups.update(groupId, { title: domain });
+                const title = domainToName[domain];
+                await chrome.tabGroups.update(groupId, { title: title });
             }
         }
         return "Tabs grouped natively!";
