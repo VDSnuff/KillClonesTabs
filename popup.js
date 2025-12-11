@@ -142,6 +142,35 @@ document.getElementById('btnGroup').onclick = async () => {
     document.getElementById("status").textContent = "Tabs grouped!";
 };
 
+document.getElementById('btnNativeGroup').onclick = async () => {
+    const tabs = await chrome.tabs.query({ currentWindow: true });
+    
+    // Group tabs by domain
+    const groups = {};
+    tabs.forEach(tab => {
+        let domain = '';
+        try { 
+            domain = new URL(tab.url).hostname; 
+            // Remove www. for cleaner group names
+            domain = domain.replace(/^www\./, '');
+        } catch (e) { 
+            domain = 'Other'; 
+        }
+        if (!groups[domain]) groups[domain] = [];
+        groups[domain].push(tab.id);
+    });
+
+    // Create native groups
+    for (const [domain, tabIds] of Object.entries(groups)) {
+        if (tabIds.length > 0) {
+            const groupId = await chrome.tabs.group({ tabIds });
+            await chrome.tabGroups.update(groupId, { title: domain });
+        }
+    }
+    
+    document.getElementById("status").textContent = "Tabs grouped natively!";
+};
+
 document.getElementById('btnPin').onclick = async () => {
     const tabs = await chrome.tabs.query({});
     if (tabs.length > 0) {
