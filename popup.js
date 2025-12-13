@@ -230,6 +230,40 @@ document.getElementById('btnNativeGroup').onclick = async () => {
     document.getElementById("status").textContent = message;
 };
 
+async function copyToClipboard(text) {
+    try {
+        await navigator.clipboard.writeText(text);
+        return true;
+    } catch (err) {
+        console.error('Failed to copy: ', err);
+        return false;
+    }
+}
+
+document.getElementById('btnCopyAll').onclick = async () => {
+    const tabs = await chrome.tabs.query({ currentWindow: true });
+    if (tabs.length === 0) return;
+
+    const text = tabs.map(t => `${t.title}\n${t.url}`).join('\n\n');
+    const success = await copyToClipboard(text);
+    
+    const status = document.getElementById("status");
+    status.textContent = success ? "All tabs copied!" : "Copy failed!";
+    setTimeout(() => { if (status.textContent.includes("copied")) status.textContent = ""; }, 1500);
+};
+
+document.getElementById('btnCopySelected').onclick = async () => {
+    const tabs = await chrome.tabs.query({ currentWindow: true, highlighted: true });
+    if (tabs.length === 0) return;
+
+    const text = tabs.map(t => `${t.title}\n${t.url}`).join('\n\n');
+    const success = await copyToClipboard(text);
+    
+    const status = document.getElementById("status");
+    status.textContent = success ? "Selected tabs copied!" : "Copy failed!";
+    setTimeout(() => { if (status.textContent.includes("copied")) status.textContent = ""; }, 1500);
+};
+
 document.getElementById('btnExport').onclick = async () => {
     const tabs = await chrome.tabs.query({ currentWindow: true });
     
