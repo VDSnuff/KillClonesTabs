@@ -1,6 +1,6 @@
-# Kill The Clones Tabs
+# Kill Clone Tabs
 
-**Kill The Clones Tabs** is a powerful Chrome extension designed to help you manage your browser tabs efficiently. It allows you to find and close duplicate tabs, sort and group them, and provides useful tools for highlighting text and copying tab information.
+**Kill Clone Tabs** is a powerful Chrome extension designed to help you manage your browser tabs efficiently. It allows you to find and close duplicate tabs, sort and group them, and provides useful tools for highlighting text and copying tab information.
 
 ## Key Features
 

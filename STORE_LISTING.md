@@ -5,7 +5,7 @@ Find and close duplicate tabs. Sort, group, and manage tabs. Highlight text on p
 
 ## Detailed Description
 
-**Kill The Clones Tabs** is the ultimate tool for tab hoarders and productivity enthusiasts. It helps you declutter your browser, organize your workspace, and manage information efficiently.
+**Kill Clone Tabs** is the ultimate tool for tab hoarders and productivity enthusiasts. It helps you declutter your browser, organize your workspace, and manage information efficiently.
 
 **KEY FEATURES:**
 
@@ -33,7 +33,7 @@ Select text on any page, and this extension will automatically highlight all oth
 *   **Smart Initials**: Configurable defaults for sorting and grouping.
 
 **PRIVACY FOCUSED**
-Kill The Clones Tabs runs entirely offline. No data collection, no tracking, no analytics. Your browsing history stays yours.
+Kill Clone Tabs runs entirely offline. No data collection, no tracking, no analytics. Your browsing history stays yours.
 
 ---
 **Version 1.66 Updates:**

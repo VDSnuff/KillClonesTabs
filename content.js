@@ -163,5 +163,5 @@ function runHighlight() {
 if (window.CSS && CSS.highlights) {
     document.addEventListener('selectionchange', debounce(runHighlight, 200));
 } else {
-    console.log("Kill The Clones: CSS Custom Highlight API not supported.");
+    console.log("Kill Clone Tabs: CSS Custom Highlight API not supported.");
 }
