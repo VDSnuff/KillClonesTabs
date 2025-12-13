@@ -1,5 +1,35 @@
 # Changelog
 
+### Version 1.66
+*   **Feature:** Added "Copy All Tabs" button to copy Title and URL of all open tabs.
+*   **Feature:** Added "Copy Selected Tabs" button to copy Title and URL of currently selected tabs.
+
+### Version 1.65
+*   **Feature:** Added comprehensive options for Text Highlighting:
+    *   Custom Highlight Color.
+    *   Case Sensitivity toggle.
+    *   Whole Words Only toggle.
+    *   Minimum Character Length setting.
+    *   Match Counter.
+
+### Version 1.64
+*   **Feature:** Implemented "Highlight Selected Text" using the modern CSS Custom Highlight API for high performance.
+
+### Version 1.63
+*   **Update:** Changed default settings to "Keep Active Tab" and "Smart Initials".
+
+### Version 1.62
+*   **Fix:** Fixed an issue where unpinning tabs would reverse their order.
+
+### Version 1.61
+*   **Fix:** Fixed the PIN functionality in the Options page.
+
+### Version 1.59
+*   **Fix:** Fixed Undo logic to correctly restore pinned state and order after sorting.
+
+### Version 1.58
+*   **Update:** Simplified Dark Mode settings to "Dark" and "Light" only.
+
 ### Version 1.27
 *   **UI:** Reverted the layout compaction to restore comfortable spacing, while keeping the increased font size.
 
