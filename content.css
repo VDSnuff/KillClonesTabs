@@ -1,4 +1,20 @@
 ::highlight(kill-clones-highlight) {
-    background-color: #ffff00;
+    background-color: var(--kill-clones-highlight-color, #ffff00);
     color: #000000;
+}
+
+#kill-clones-counter {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-family: sans-serif;
+    font-size: 14px;
+    z-index: 2147483647; /* Max z-index */
+    pointer-events: none;
+    transition: opacity 0.3s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }

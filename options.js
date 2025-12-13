@@ -8,6 +8,14 @@ function saveOptions() {
     const autoKill = document.getElementById('autoKill').checked;
     const keepStrategy = document.getElementById('keepStrategy').value;
     const groupNaming = document.getElementById('groupNaming').value;
+    
+    // Highlight Settings
+    const highlightEnabled = document.getElementById('highlightEnabled').checked;
+    const highlightColor = document.getElementById('highlightColor').value;
+    const highlightMatchCase = document.getElementById('highlightMatchCase').checked;
+    const highlightWholeWords = document.getElementById('highlightWholeWords').checked;
+    const highlightMinLength = document.getElementById('highlightMinLength').value;
+
     const hideList = document.getElementById('hideList').value;
 
     chrome.storage.sync.set({
@@ -19,6 +27,11 @@ function saveOptions() {
         autoKill: autoKill,
         keepStrategy: keepStrategy,
         groupNaming: groupNaming,
+        highlightEnabled: highlightEnabled,
+        highlightColor: highlightColor,
+        highlightMatchCase: highlightMatchCase,
+        highlightWholeWords: highlightWholeWords,
+        highlightMinLength: highlightMinLength,
         hideList: hideList
     });
 }
@@ -36,6 +49,11 @@ function restoreOptions() {
         keepCurrentTab: false, // Legacy support
         keepStrategy: 'active',
         groupNaming: 'initials',
+        highlightEnabled: true,
+        highlightColor: '#ffff00',
+        highlightMatchCase: false,
+        highlightWholeWords: false,
+        highlightMinLength: 2,
         hideList: '',
         protectionPin: ''
     }, (items) => {
@@ -45,6 +63,13 @@ function restoreOptions() {
         document.getElementById('ignoreQuery').checked = items.ignoreQuery;
         document.getElementById('ignoreProtocol').checked = items.ignoreProtocol;
         document.getElementById('autoKill').checked = items.autoKill;
+        
+        // Highlight Settings
+        document.getElementById('highlightEnabled').checked = items.highlightEnabled;
+        document.getElementById('highlightColor').value = items.highlightColor;
+        document.getElementById('highlightMatchCase').checked = items.highlightMatchCase;
+        document.getElementById('highlightWholeWords').checked = items.highlightWholeWords;
+        document.getElementById('highlightMinLength').value = items.highlightMinLength;
         
         // Migration logic: if keepCurrentTab was true, default to 'active'
         let strategy = items.keepStrategy;
@@ -138,6 +163,14 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('autoKill').addEventListener('change', saveOptions);
     document.getElementById('keepStrategy').addEventListener('change', saveOptions);
     document.getElementById('groupNaming').addEventListener('change', saveOptions);
+    
+    // Highlight Listeners
+    document.getElementById('highlightEnabled').addEventListener('change', saveOptions);
+    document.getElementById('highlightColor').addEventListener('change', saveOptions);
+    document.getElementById('highlightMatchCase').addEventListener('change', saveOptions);
+    document.getElementById('highlightWholeWords').addEventListener('change', saveOptions);
+    document.getElementById('highlightMinLength').addEventListener('change', saveOptions);
+
     document.getElementById('hideList').addEventListener('input', saveOptions);
     // document.getElementById('btnAuth').addEventListener('click', checkPin); // Handled in restoreOptions
     document.getElementById('btnSavePin').addEventListener('click', savePin);

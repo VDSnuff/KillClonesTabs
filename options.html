@@ -80,6 +80,36 @@
 
     <hr style="border: 0; border-top: 1px solid #ccc; margin: 15px 0;">
 
+    <h1>Text Highlighting</h1>
+    <label>
+        <input type="checkbox" id="highlightEnabled">
+        Enable Text Highlighting
+    </label>
+    
+    <div style="margin-left: 24px; margin-bottom: 15px;">
+        <label>
+            Highlight Color:
+            <input type="color" id="highlightColor" value="#ffff00" style="vertical-align: middle; margin-left: 5px;">
+        </label>
+
+        <label>
+            <input type="checkbox" id="highlightMatchCase">
+            Match Case
+        </label>
+
+        <label>
+            <input type="checkbox" id="highlightWholeWords">
+            Match Whole Words Only
+        </label>
+
+        <label>
+            Minimum Text Length:
+            <input type="number" id="highlightMinLength" min="1" max="20" value="2" style="width: 40px; margin-left: 5px;">
+        </label>
+    </div>
+
+    <hr style="border: 0; border-top: 1px solid #ccc; margin: 15px 0;">
+
     <h1>Hide Evidence Settings</h1>
     
     <!-- Auth Section -->
