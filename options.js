@@ -34,8 +34,8 @@ function restoreOptions() {
         ignoreProtocol: false,
         autoKill: false,
         keepCurrentTab: false, // Legacy support
-        keepStrategy: 'oldest',
-        groupNaming: 'domain',
+        keepStrategy: 'active',
+        groupNaming: 'initials',
         hideList: '',
         protectionPin: ''
     }, (items) => {

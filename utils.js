@@ -46,7 +46,7 @@ export async function findDuplicateTabs() {
         ignoreQuery: false,
         ignoreProtocol: false,
         keepCurrentTab: false, // Legacy
-        keepStrategy: 'oldest'
+        keepStrategy: 'active'
     });
 
     // Migration logic for legacy setting
@@ -110,7 +110,7 @@ export async function toggleTabGroups(windowId) {
     const tabs = await chrome.tabs.query({ windowId });
     
     // Fetch settings
-    const settings = await chrome.storage.sync.get({ groupNaming: 'domain' });
+    const settings = await chrome.storage.sync.get({ groupNaming: 'initials' });
 
     // Check if any tab is in a group
     // chrome.tabGroups.TAB_GROUP_ID_NONE is -1
